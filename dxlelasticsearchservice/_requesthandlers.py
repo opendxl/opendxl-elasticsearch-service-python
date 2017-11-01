@@ -1,6 +1,7 @@
 import logging
 
 from elasticsearch import Elasticsearch
+from elasticsearch.exceptions import ElasticsearchException, TransportError
 
 from dxlbootstrap.util import MessageUtils
 from dxlclient.callbacks import EventCallback, RequestCallback
@@ -30,12 +31,16 @@ class ElasticSearchServiceEventCallback(EventCallback):
         """
         :param dxlclient.message.Event event: The event
         """
+        if event and event.payload:
+            logger.debug("Received event for topic %s. Payload: %s",
+                         event.destination_topic, event.payload)
+
         try:
             event_json = MessageUtils.json_payload_to_dict(event)
         except ValueError:
             logger.error(
                 "%s, skipping indexing for topic: %s",
-                "Unable to parse event as JSON",
+                "Unable to parse event payload as JSON",
                 event.destination_topic)
             return
 
@@ -68,7 +73,7 @@ class ElasticSearchServiceEventCallback(EventCallback):
             logger.exception(
                 "%s: %s. Event: %s, Topic: %s, Index: %s, Type: %s%s.",
                 "Error indexing event to elasticsearch",
-                e.__str__(),
+                str(e),
                 self._event_group_name,
                 event.destination_topic,
                 self._document_index,
@@ -101,8 +106,29 @@ class ElasticSearchServiceRequestCallback(RequestCallback):
 
             response_data = self._api_method(**request_dict)
             MessageUtils.dict_to_json_payload(res, response_data)
+
+        except ElasticsearchException as ex:
+            error_str = str(ex)
+            logger.exception("Elasticsearch exception handling request: %s",
+                             error_str)
+            res = ErrorResponse(
+                request,
+                error_message=MessageUtils.encode(error_str))
+            error_dict = {
+                "module": ex.__module__,
+                "class": ex.__class__.__name__}
+            if isinstance(ex, TransportError):
+                error_dict["data"] = {"status_code": ex.status_code,
+                                      "error": ex.error,
+                                      "info": ex.info}
+            MessageUtils.dict_to_json_payload(res, error_dict)
+
         except Exception as ex:
-            logger.exception("Error handling request: %s", str(ex))
+            error_str = str(ex)
+            logger.exception("Error handling request: %s", error_str)
+            if not error_str:
+                error_str = ex.__class__.__name__
             res = ErrorResponse(request,
-                                error_message=MessageUtils.encode(str(ex)))
+                                error_message=MessageUtils.encode(error_str))
+
         self._app.client.send_response(res)
