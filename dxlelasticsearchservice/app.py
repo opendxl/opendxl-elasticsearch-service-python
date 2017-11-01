@@ -4,7 +4,10 @@ import os
 from elasticsearch import Elasticsearch
 
 from dxlbootstrap.app import Application
-from dxlelasticsearchservice._requesthandlers import ElasticSearchServiceEventCallback
+from dxlclient import ServiceRegistrationInfo
+from dxlelasticsearchservice._requesthandlers import \
+    ElasticSearchServiceEventCallback, \
+    ElasticSearchServiceRequestCallback
 
 # Configure local logger
 logger = logging.getLogger(__name__)
@@ -15,10 +18,14 @@ class ElasticSearchService(Application):
     The "OpenDXL Elasticsearch Service" application class.
     """
 
+    _SERVICE_TYPE = "/opendxl-elasticsearch/service/elasticsearch-api"
+
     _GENERAL_CONFIG_SECTION = "General"
 
     _GENERAL_SERVER_NAMES_CONFIG_PROP = "serverNames"
-    _GENERAL_EVENTS_CONFIG_PROP = "events"
+    _GENERAL_EVENT_NAMES_CONFIG_PROP = "eventNames"
+    _GENERAL_API_NAMES_CONFIG_PROP = "apiNames"
+    _GENERAL_SERVICE_UNIQUE_ID_PROP = "serviceUniqueId"
 
     _SERVER_HOST_CONFIG_PROP = "host"
     _SERVER_PORT_CONFIG_PROP = "port"
@@ -227,18 +234,28 @@ class ElasticSearchService(Application):
             self._GENERAL_SERVER_NAMES_CONFIG_PROP,
             return_type=list,
             raise_exception_if_missing=True)
-
         server_hosts = map(self._get_server_settings, server_names)
 
         event_group_names = self._get_setting_from_config(
             self._GENERAL_CONFIG_SECTION,
-            self._GENERAL_EVENTS_CONFIG_PROP,
+            self._GENERAL_EVENT_NAMES_CONFIG_PROP,
             return_type=list,
             default_value=[])
-
         self._event_groups = \
             {event_group_name: self._get_event_group_settings(event_group_name)
              for event_group_name in event_group_names}
+
+        self._api_names = self._get_setting_from_config(
+            self._GENERAL_CONFIG_SECTION,
+            self._GENERAL_API_NAMES_CONFIG_PROP,
+            return_type=list,
+            default_value=[])
+
+        self._service_unique_id = self._get_setting_from_config(
+            self._GENERAL_CONFIG_SECTION,
+            self._GENERAL_SERVICE_UNIQUE_ID_PROP,
+            default_value=server_names[0] \
+                if len(server_names) == 1 else None)
 
         logger.debug("Server host settings: %s", server_hosts)
         self._es_client = Elasticsearch(server_hosts)
@@ -268,3 +285,48 @@ class ElasticSearchService(Application):
                 self.add_event_callback(topic,
                                         callback,
                                         separate_thread=False)
+
+    def _get_api_method(self, apis_so_far, api_name):
+        valid_api_name = False
+        if hasattr(self._es_client, api_name):
+            api_attr = getattr(self._es_client, api_name)
+            if callable(api_attr):
+                valid_api_name = True
+                apis_so_far.append(api_attr)
+        if not valid_api_name:
+            logger.warning("Elasticsearch API name is invalid: %s", api_name)
+        return apis_so_far
+
+    def on_register_services(self):
+        """
+        Invoked when services should be registered with the application
+        """
+        api_methods = reduce(self._get_api_method, self._api_names, [])
+
+        if api_methods:
+            if not self._service_unique_id:
+                raise ValueError(
+                    "Required setting {} in section {} is empty".format(
+                        "serviceUniqueId", self._GENERAL_CONFIG_SECTION))
+
+            logger.info("Registering service: elasticsearch_service")
+            service = ServiceRegistrationInfo(
+                self._dxl_client,
+                self._SERVICE_TYPE)
+
+            for api_method in api_methods:
+                api_method_name = api_method.__name__
+                logger.info("Registering request callback: %s_%s_%s_%s",
+                            "elasticsearch",
+                            self._service_unique_id,
+                            api_method_name,
+                            "requesthandler")
+                self.add_request_callback(
+                    service,
+                    "{}/{}/{}".format(self._SERVICE_TYPE,
+                                      self._service_unique_id,
+                                      api_method_name),
+                    ElasticSearchServiceRequestCallback(self, api_method),
+                    False)
+
+            self.register_service(service)

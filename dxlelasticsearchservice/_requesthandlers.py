@@ -3,7 +3,8 @@ import logging
 from elasticsearch import Elasticsearch
 
 from dxlbootstrap.util import MessageUtils
-from dxlclient.callbacks import EventCallback
+from dxlclient.callbacks import EventCallback, RequestCallback
+from dxlclient.message import ErrorResponse, Response
 
 # Configure local logger
 logger = logging.getLogger(__name__)
@@ -64,7 +65,7 @@ class ElasticSearchServiceEventCallback(EventCallback):
                                   body=event_json,
                                   id=document_id)
         except Exception as e:
-            logger.error(
+            logger.exception(
                 "%s: %s. Event: %s, Topic: %s, Index: %s, Type: %s%s.",
                 "Error indexing event to elasticsearch",
                 e.__str__(),
@@ -73,4 +74,35 @@ class ElasticSearchServiceEventCallback(EventCallback):
                 self._document_index,
                 self._document_type,
                 ", Id: {}".format(document_id) if document_id else "")
-            raise
+
+
+class ElasticSearchServiceRequestCallback(RequestCallback):
+    """
+    """
+    def __init__(self, app, api_method):
+        super(ElasticSearchServiceRequestCallback, self).__init__()
+        self._app = app
+        self._api_method = api_method
+
+    def on_request(self, request):
+        """
+        :param dxlclient.message.Request request: The request
+        """
+        MessageUtils.decode_payload(request)
+        logger.info("Request received on topic '%s'",
+                    request.destination_topic)
+        logger.debug("Payload for topic %s: %s", request.destination_topic,
+                     request.payload)
+        try:
+            res = Response(request)
+
+            request_dict = MessageUtils.json_payload_to_dict(request) \
+                if request.payload else {}
+
+            response_data = self._api_method(**request_dict)
+            MessageUtils.dict_to_json_payload(res, response_data)
+        except Exception as ex:
+            logger.exception("Error handling request: %s", str(ex))
+            res = ErrorResponse(request,
+                                error_message=MessageUtils.encode(str(ex)))
+        self._app.client.send_response(res)
