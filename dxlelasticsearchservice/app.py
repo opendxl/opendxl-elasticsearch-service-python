@@ -6,14 +6,14 @@ from elasticsearch import Elasticsearch
 from dxlbootstrap.app import Application
 from dxlclient import ServiceRegistrationInfo
 from dxlelasticsearchservice._requesthandlers import \
-    ElasticSearchServiceEventCallback, \
-    ElasticSearchServiceRequestCallback
+    ElasticsearchServiceEventCallback, \
+    ElasticsearchServiceRequestCallback
 
 # Configure local logger
 logger = logging.getLogger(__name__)
 
 
-class ElasticSearchService(Application):
+class ElasticsearchService(Application):
     """
     The "OpenDXL Elasticsearch Service" application class.
     """
@@ -54,7 +54,7 @@ class ElasticSearchService(Application):
         :param config_dir: The location of the configuration files for the
             application
         """
-        super(ElasticSearchService,
+        super(ElasticsearchService,
               self).__init__(config_dir, "dxlelasticsearchservice.config")
         self._api_names = ()
         self._es_client = None
@@ -314,7 +314,7 @@ class ElasticSearchService(Application):
         for event_group_name, event_group_info in self._event_groups.items():
             logger.debug("Processing event info for group %s: %s",
                          event_group_name, event_group_info)
-            callback = ElasticSearchServiceEventCallback(
+            callback = ElasticsearchServiceEventCallback(
                 self._es_client,
                 event_group_name,
                 event_group_info["document_index"],
@@ -378,7 +378,7 @@ class ElasticSearchService(Application):
                 self.add_request_callback(
                     service,
                     topic,
-                    ElasticSearchServiceRequestCallback(self, api_method),
+                    ElasticsearchServiceRequestCallback(self, api_method),
                     False)
 
             self.register_service(service)

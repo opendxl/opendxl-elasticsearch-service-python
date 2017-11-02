@@ -6,7 +6,7 @@ import os
 import signal
 import threading
 
-from .app import ElasticSearchService
+from .app import ElasticsearchService
 
 # Whether the application is running
 running = False
@@ -46,7 +46,7 @@ if len(sys.argv) != 2:
 #
 
 config_dir = sys.argv[1]
-logging_config_path = os.path.join(config_dir, ElasticSearchService.LOGGING_CONFIG_FILE)
+logging_config_path = os.path.join(config_dir, ElasticsearchService.LOGGING_CONFIG_FILE)
 if os.access(logging_config_path, os.R_OK):
     # Log configuration via configuration file
     fileConfig(logging_config_path, disable_existing_loggers=False)
@@ -63,7 +63,7 @@ else:
     logger.setLevel(logging.INFO)
 
 # Create the application
-with ElasticSearchService(sys.argv[1]) as app:
+with ElasticsearchService(sys.argv[1]) as app:
     try:
         # Run the application
         app.run()

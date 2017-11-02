@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 
 from ._version import __version__
-from .app import ElasticSearchService
+from .app import ElasticsearchService
 
 
 def get_version():

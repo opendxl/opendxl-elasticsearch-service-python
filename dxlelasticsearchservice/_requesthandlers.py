@@ -37,7 +37,7 @@ else:
 logger = logging.getLogger(__name__)
 
 
-class ElasticSearchServiceEventCallback(EventCallback):
+class ElasticsearchServiceEventCallback(EventCallback):
     """
     """
 
@@ -49,7 +49,7 @@ class ElasticSearchServiceEventCallback(EventCallback):
         """
         :param Elasticsearch es_client: The elasticsearch client
         """
-        super(ElasticSearchServiceEventCallback, self).__init__()
+        super(ElasticsearchServiceEventCallback, self).__init__()
         self._es_client = es_client
         self._event_group_name = event_group_name
         self._document_index = document_index
@@ -204,11 +204,11 @@ class ElasticSearchServiceEventCallback(EventCallback):
                                                     "ID"))
 
 
-class ElasticSearchServiceRequestCallback(RequestCallback):
+class ElasticsearchServiceRequestCallback(RequestCallback):
     """
     """
     def __init__(self, app, api_method):
-        super(ElasticSearchServiceRequestCallback, self).__init__()
+        super(ElasticsearchServiceRequestCallback, self).__init__()
         self._app = app
         self._api_method = api_method
 
