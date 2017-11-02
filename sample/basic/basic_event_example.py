@@ -16,11 +16,11 @@ from common import *
 logging.getLogger().setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
-SERVICE_UNIQUE_ID = "test"
+SERVICE_UNIQUE_ID = "sample"
 
-DOCUMENT_INDEX = "test_index"
-DOCUMENT_TYPE = "test_doc"
-DOCUMENT_ID = "basic_event_example"
+DOCUMENT_INDEX = "opendxl-elasticsearch-service-examples"
+DOCUMENT_TYPE = "basic-event-example-doc"
+DOCUMENT_ID = "basic-event-example-id"
 EVENT_TOPIC = "/sample/elasticsearch/basicevent"
 ELASTICSEARCH_API_TOPIC = "/opendxl-elasticsearch/service/elasticsearch-api"
 
@@ -76,8 +76,7 @@ with DxlClient(config) as client:
             MessageUtils.dict_to_json(res_dict, pretty_print=True)))
     else:
         print("Error invoking service with topic '{}': {} ({})".format(
-            request_topic, res.error_message,
-            res.error_code))
+            request_topic, res.error_message, res.error_code))
         if res.payload:
             # Display the payload in the error response
             res_dict = MessageUtils.json_payload_to_dict(res)

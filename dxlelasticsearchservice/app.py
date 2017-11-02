@@ -23,7 +23,7 @@ class ElasticSearchService(Application):
     _GENERAL_CONFIG_SECTION = "General"
 
     _GENERAL_SERVER_NAMES_CONFIG_PROP = "serverNames"
-    _GENERAL_EVENT_NAMES_CONFIG_PROP = "eventNames"
+    _GENERAL_EVENT_GROUP_NAMES_CONFIG_PROP = "eventGroupNames"
     _GENERAL_API_NAMES_CONFIG_PROP = "apiNames"
     _GENERAL_SERVICE_UNIQUE_ID_PROP = "serviceUniqueId"
     _GENERAL_RELOAD_TRANSFORM_SCRIPTS_ON_CHANGE = \
@@ -128,7 +128,7 @@ class ElasticSearchService(Application):
                         setting, section, e.message))
             if return_type == str:
                 return_value = return_value.strip()
-                if len(return_value) is 0:
+                if len(return_value) is 0 and raise_exception_if_missing:
                     raise ValueError(
                         "Required setting {} in section {} is empty".format(
                             setting, section))
@@ -147,7 +147,7 @@ class ElasticSearchService(Application):
         else:
             return_value = default_value
 
-        if is_file_path and return_value is not None:
+        if is_file_path and return_value:
             return_value = self._get_path(return_value)
             if not os.path.isfile(return_value):
                 raise ValueError(
@@ -271,7 +271,7 @@ class ElasticSearchService(Application):
 
         event_group_names = self._get_setting_from_config(
             self._GENERAL_CONFIG_SECTION,
-            self._GENERAL_EVENT_NAMES_CONFIG_PROP,
+            self._GENERAL_EVENT_GROUP_NAMES_CONFIG_PROP,
             return_type=list,
             default_value=[])
         self._event_groups = \
@@ -312,6 +312,8 @@ class ElasticSearchService(Application):
         Invoked when event handlers should be registered with the application
         """
         for event_group_name, event_group_info in self._event_groups.items():
+            logger.debug("Processing event info for group %s: %s",
+                         event_group_name, event_group_info)
             callback = ElasticSearchServiceEventCallback(
                 self._es_client,
                 event_group_name,
@@ -363,16 +365,19 @@ class ElasticSearchService(Application):
 
             for api_method in api_methods:
                 api_method_name = api_method.__name__
-                logger.info("Registering request callback: %s_%s_%s_%s",
-                            "elasticsearch",
-                            self._service_unique_id,
-                            api_method_name,
-                            "requesthandler")
+                topic = "{}/{}/{}".format(self._SERVICE_TYPE,
+                                          self._service_unique_id,
+                                          api_method_name)
+                logger.info(
+                    "Registering request callback: %s_%s_%s_%s. Topic: %s.",
+                    "elasticsearch",
+                    self._service_unique_id,
+                    api_method_name,
+                    "requesthandler",
+                    topic)
                 self.add_request_callback(
                     service,
-                    "{}/{}/{}".format(self._SERVICE_TYPE,
-                                      self._service_unique_id,
-                                      api_method_name),
+                    topic,
                     ElasticSearchServiceRequestCallback(self, api_method),
                     False)
 

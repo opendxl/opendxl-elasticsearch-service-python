@@ -76,7 +76,7 @@ class ElasticSearchServiceEventCallback(EventCallback):
                          event.destination_topic, event.payload)
 
         index_parameters = self._get_index_parameters(event)
-        if self._transform_script is not None:
+        if self._transform_script:
             index_operations = self._get_transformed_operations(
                 event, index_parameters)
         else:
@@ -163,7 +163,7 @@ class ElasticSearchServiceEventCallback(EventCallback):
                         "skipping indexing for topic",
                         event.destination_topic)
         except ValueError:
-            if self._transform_function:
+            if self._transform_script:
                 body = event.payload
             else:
                 logger.error(

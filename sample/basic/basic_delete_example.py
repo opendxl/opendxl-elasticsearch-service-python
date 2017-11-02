@@ -15,10 +15,10 @@ from common import *
 logging.getLogger().setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
-SERVICE_UNIQUE_ID = "test"
+SERVICE_UNIQUE_ID = "sample"
 
-DOCUMENT_INDEX = "test_index"
-DOCUMENT_TYPE = "test_doc"
+DOCUMENT_INDEX = "opendxl-elasticsearch-service-examples"
+DOCUMENT_TYPE = "basic-example-doc"
 DOCUMENT_ID = "12345"
 ELASTICSEARCH_API_TOPIC = "/opendxl-elasticsearch/service/elasticsearch-api"
 
