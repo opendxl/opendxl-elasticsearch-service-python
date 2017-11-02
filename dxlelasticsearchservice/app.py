@@ -26,6 +26,8 @@ class ElasticSearchService(Application):
     _GENERAL_EVENT_NAMES_CONFIG_PROP = "eventNames"
     _GENERAL_API_NAMES_CONFIG_PROP = "apiNames"
     _GENERAL_SERVICE_UNIQUE_ID_PROP = "serviceUniqueId"
+    _GENERAL_RELOAD_TRANSFORM_SCRIPTS_ON_CHANGE = \
+        "reloadTransformScriptsOnChange"
 
     _SERVER_HOST_CONFIG_PROP = "host"
     _SERVER_PORT_CONFIG_PROP = "port"
@@ -43,6 +45,7 @@ class ElasticSearchService(Application):
     _EVENT_DOCUMENT_INDEX_PROP = "documentIndex"
     _EVENT_DOCUMENT_TYPE_PROP = "documentType"
     _EVENT_ID_FIELD_NAME_PROP = "idFieldName"
+    _EVENT_TRANSFORM_SCRIPT_PROP = "transformScript"
 
     def __init__(self, config_dir):
         """
@@ -53,7 +56,11 @@ class ElasticSearchService(Application):
         """
         super(ElasticSearchService,
               self).__init__(config_dir, "dxlelasticsearchservice.config")
+        self._api_names = ()
         self._es_client = None
+        self._event_groups = {}
+        self._service_unique_id = None
+        self._reload_transform_scripts_on_change = False
 
     @property
     def client(self):
@@ -66,7 +73,8 @@ class ElasticSearchService(Application):
     @property
     def config(self):
         """
-        The application configuration (as read from the "dxlelasticsearchservice.config" file)
+        The application configuration (as read from the
+        "dxlelasticsearchservice.config" file)
         """
         return self._config
 
@@ -76,11 +84,26 @@ class ElasticSearchService(Application):
         """
         logger.info("On 'run' callback.")
 
+    def _get_path(self, in_path):
+        """
+        Returns an absolute path for a file specified in the configuration file
+        (supports files relative to the configuration file).
+
+        :param in_path: The specified path
+        :return: An absolute path for a file specified in the configuration
+            file
+        """
+        if not os.path.isfile(in_path) and not os.path.isabs(in_path):
+            config_rel_path = os.path.join(self._config_dir, in_path)
+            if os.path.isfile(config_rel_path):
+                in_path = config_rel_path
+        return in_path
+
     def _get_setting_from_config(self, section, setting,
                                  default_value=None,
                                  return_type=str,
                                  raise_exception_if_missing=False,
-                                 verify_file_path=False):
+                                 is_file_path=False):
         """
 
         :param section:
@@ -124,12 +147,12 @@ class ElasticSearchService(Application):
         else:
             return_value = default_value
 
-        if verify_file_path \
-                and return_value is not None and \
-                not os.access(return_value, os.R_OK):
-            raise ValueError(
-                "Cannot read file for setting {} in section {}: {}".format(
-                    setting, section, return_value))
+        if is_file_path and return_value is not None:
+            return_value = self._get_path(return_value)
+            if not os.path.isfile(return_value):
+                raise ValueError(
+                    "Cannot find file for setting {} in section {}: {}".format(
+                        setting, section, return_value))
 
         return return_value
 
@@ -152,13 +175,13 @@ class ElasticSearchService(Application):
                 return_type=bool),
             "ca_certs": self._get_setting_from_config(
                 server_name, self._SERVER_VERIFY_CERT_BUNDLE,
-                verify_file_path=True),
+                is_file_path=True),
             "client_cert": self._get_setting_from_config(
                 server_name, self._SERVER_CLIENT_CERTIFICATE,
-                verify_file_path=True),
+                is_file_path=True),
             "client_key": self._get_setting_from_config(
                 server_name, self._SERVER_CLIENT_KEY,
-                verify_file_path=True)}
+                is_file_path=True)}
 
         for key, value in optional_settings.items():
             if value is not None:
@@ -172,11 +195,17 @@ class ElasticSearchService(Application):
         if user and password:
             server["http_auth"] = (user, password)
         elif user:
-            raise Exception(
-                "Password must be specified if user is specified")
+            raise ValueError(
+                "{} must be specified in section {} since {} is specified".
+                format(self._SERVER_PASSWORD_CONFIG_PROP,
+                       server_name,
+                       self._SERVER_USER_CONFIG_PROP))
         elif password:
-            raise Exception(
-                "Password must be specified if user is specified")
+            raise ValueError(
+                "{} must be specified in section {} since {} is specified".
+                format(self._SERVER_USER_CONFIG_PROP,
+                       server_name,
+                       self._SERVER_PASSWORD_CONFIG_PROP))
 
         try:
             verify_host_name = self._get_setting_from_config(
@@ -206,17 +235,21 @@ class ElasticSearchService(Application):
                 self._EVENT_TOPICS_CONFIG_PROP,
                 return_type=list,
                 raise_exception_if_missing=True),
-            "documentIndex": self._get_setting_from_config(
+            "document_index": self._get_setting_from_config(
                 event_group,
                 self._EVENT_DOCUMENT_INDEX_PROP,
                 raise_exception_if_missing=True),
-            "documentType": self._get_setting_from_config(
+            "document_type": self._get_setting_from_config(
                 event_group,
                 self._EVENT_DOCUMENT_TYPE_PROP,
                 raise_exception_if_missing=True),
-            "idFieldName": self._get_setting_from_config(
+            "id_field_name": self._get_setting_from_config(
                 event_group,
-                self._EVENT_ID_FIELD_NAME_PROP)}
+                self._EVENT_ID_FIELD_NAME_PROP),
+            "transform_script": self._get_setting_from_config(
+                event_group,
+                self._EVENT_TRANSFORM_SCRIPT_PROP,
+                is_file_path=True)}
 
     def on_load_configuration(self, config):
         """
@@ -225,7 +258,7 @@ class ElasticSearchService(Application):
         This callback provides the opportunity for the application to parse
         additional configuration properties.
 
-        :param config: The application configuration
+        :param ConfigParser config: The application configuration
         """
         logger.info("On 'load configuration' callback.")
 
@@ -254,8 +287,15 @@ class ElasticSearchService(Application):
         self._service_unique_id = self._get_setting_from_config(
             self._GENERAL_CONFIG_SECTION,
             self._GENERAL_SERVICE_UNIQUE_ID_PROP,
-            default_value=server_names[0] \
-                if len(server_names) == 1 else None)
+            default_value=server_names[0]
+            if len(server_names) == 1 else None)
+
+        self._reload_transform_scripts_on_change = \
+            self._get_setting_from_config(
+                self._GENERAL_CONFIG_SECTION,
+                self._GENERAL_RELOAD_TRANSFORM_SCRIPTS_ON_CHANGE,
+                return_type=bool,
+                default_value=False)
 
         logger.debug("Server host settings: %s", server_hosts)
         self._es_client = Elasticsearch(server_hosts)
@@ -275,10 +315,13 @@ class ElasticSearchService(Application):
             callback = ElasticSearchServiceEventCallback(
                 self._es_client,
                 event_group_name,
-                event_group_info["documentIndex"],
-                event_group_info["documentType"],
+                event_group_info["document_index"],
+                event_group_info["document_type"],
                 event_group_info["topics"],
-                event_group_info["idFieldName"])
+                event_group_info["id_field_name"],
+                event_group_info["transform_script"],
+                self._reload_transform_scripts_on_change)
+
             for topic in event_group_info["topics"]:
                 logger.info("Registering event callback %s for group %s",
                             topic, event_group_name)
@@ -286,22 +329,26 @@ class ElasticSearchService(Application):
                                         callback,
                                         separate_thread=False)
 
-    def _get_api_method(self, apis_so_far, api_name):
-        valid_api_name = False
+    def _get_api_method(self, api_name):
+        api_method = None
         if hasattr(self._es_client, api_name):
             api_attr = getattr(self._es_client, api_name)
             if callable(api_attr):
-                valid_api_name = True
-                apis_so_far.append(api_attr)
-        if not valid_api_name:
-            logger.warning("Elasticsearch API name is invalid: %s", api_name)
-        return apis_so_far
+                api_method = api_attr
+        return api_method
 
     def on_register_services(self):
         """
         Invoked when services should be registered with the application
         """
-        api_methods = reduce(self._get_api_method, self._api_names, [])
+        api_methods = []
+        for api_name in self._api_names:
+            api_method = self._get_api_method(api_name)
+            if api_method:
+                api_methods.append(api_method)
+            else:
+                logger.warning("Elasticsearch API name is invalid: %s",
+                               api_name)
 
         if api_methods:
             if not self._service_unique_id:

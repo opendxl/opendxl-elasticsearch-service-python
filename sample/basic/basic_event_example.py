@@ -20,7 +20,7 @@ SERVICE_UNIQUE_ID = "test"
 
 DOCUMENT_INDEX = "test_index"
 DOCUMENT_TYPE = "test_doc"
-DOCUMENT_ID = "12345"
+DOCUMENT_ID = "basic_event_example"
 EVENT_TOPIC = "/sample/elasticsearch/basicevent"
 ELASTICSEARCH_API_TOPIC = "/opendxl-elasticsearch/service/elasticsearch-api"
 
