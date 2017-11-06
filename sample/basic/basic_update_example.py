@@ -1,4 +1,3 @@
-import json
 import os
 import sys
 
@@ -39,14 +38,13 @@ with DxlClient(config) as client:
     update_request = Request(request_topic)
 
     # Set the payload for the update request
-    body_payload = json.dumps({
-        "doc": {
-            "source": "Basic Update Example"}}).encode(encoding="utf-8")
-    update_request.payload = json.dumps({
+    MessageUtils.dict_to_json_payload(update_request, {
         "index": DOCUMENT_INDEX,
         "doc_type": DOCUMENT_TYPE,
         "id": DOCUMENT_ID,
-        "body": body_payload}).encode(encoding="utf-8")
+        "body": {
+            "doc": {
+                "source": "Basic Update Example"}}})
 
     # Send the update request
     update_response = client.sync_request(update_request, timeout=30)
@@ -75,10 +73,10 @@ with DxlClient(config) as client:
     get_request = Request(request_topic)
 
     # Set the payload for the get request
-    get_request.payload = json.dumps({
+    MessageUtils.dict_to_json_payload(get_request, {
         "index": DOCUMENT_INDEX,
         "doc_type": DOCUMENT_TYPE,
-        "id": DOCUMENT_ID}).encode(encoding="utf-8")
+        "id": DOCUMENT_ID})
 
     # Send the get request
     get_response = client.sync_request(get_request, timeout=30)

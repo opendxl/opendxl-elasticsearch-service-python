@@ -1,4 +1,3 @@
-import json
 import os
 import sys
 
@@ -39,14 +38,13 @@ with DxlClient(config) as client:
     index_request = Request(request_topic)
 
     # Set the payload for the index request
-    body_payload = json.dumps({
-        "message": "Hello from OpenDXL",
-        "source": "Basic Index Example"}).encode(encoding="utf-8")
-    index_request.payload = json.dumps({
+    MessageUtils.dict_to_json_payload(index_request, {
         "index": DOCUMENT_INDEX,
         "doc_type": DOCUMENT_TYPE,
         "id": DOCUMENT_ID,
-        "body": body_payload}).encode(encoding="utf-8")
+        "body": {
+            "message": "Hello from OpenDXL",
+            "source": "Basic Index Example"}})
 
     # Send the index request
     index_response = client.sync_request(index_request, timeout=30)
@@ -68,10 +66,10 @@ with DxlClient(config) as client:
     get_request = Request(request_topic)
 
     # Set the payload for the get request
-    get_request.payload = json.dumps({
+    MessageUtils.dict_to_json_payload(get_request, {
         "index": DOCUMENT_INDEX,
         "doc_type": DOCUMENT_TYPE,
-        "id": DOCUMENT_ID}).encode(encoding="utf-8")
+        "id": DOCUMENT_ID})
 
     # Send the get request
     get_response = client.sync_request(get_request, timeout=30)

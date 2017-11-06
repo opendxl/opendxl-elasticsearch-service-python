@@ -1,4 +1,3 @@
-import json
 import os
 import sys
 
@@ -39,10 +38,10 @@ with DxlClient(config) as client:
     req = Request(request_topic)
 
     # Set the payload for the delete request
-    req.payload = json.dumps({
+    MessageUtils.dict_to_json_payload(req, {
         "index": DOCUMENT_INDEX,
         "doc_type": DOCUMENT_TYPE,
-        "id": DOCUMENT_ID}).encode(encoding="utf-8")
+        "id": DOCUMENT_ID})
 
     # Send the delete request
     res = client.sync_request(req, timeout=30)

@@ -1,7 +1,6 @@
-import time
-import json
 import os
 import sys
+import time
 
 from dxlbootstrap.util import MessageUtils
 from dxlclient.client_config import DxlClientConfig
@@ -39,7 +38,7 @@ with DxlClient(config) as client:
     event = Event(EVENT_TOPIC)
 
     # Set the payload
-    event.payload = "Hello from OpenDXL".encode(encoding="utf-8")
+    MessageUtils.encode_payload(event, "Hello from OpenDXL")
 
     # Send the event
     client.send_event(event)
@@ -53,10 +52,10 @@ with DxlClient(config) as client:
         req = Request(request_topic)
 
         # Set the payload for the get request
-        req.payload = json.dumps({
+        MessageUtils.dict_to_json_payload(req, {
             "index": DOCUMENT_INDEX,
             "doc_type": DOCUMENT_TYPE,
-            "id": document_id}).encode(encoding="utf-8")
+            "id": document_id})
 
         tries_remaining = 5
         # Send up to 5 requests to the elasticsearch DXL service to try to

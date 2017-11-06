@@ -1,4 +1,3 @@
-import json
 import logging
 
 from dxlbootstrap.util import MessageUtils
@@ -11,7 +10,7 @@ def on_event(event, index_operation):
 
     MessageUtils.decode_payload(event)
     index_operation["id"] = "advanced-event-example-id-1"
-    index_operation["body"] = json.dumps({
+    index_operation["body"] = MessageUtils.dict_to_json({
         "id": index_operation["id"],
         "message": event.payload,
         "source": "Advanced Transform Example"})
@@ -20,7 +19,7 @@ def on_event(event, index_operation):
         "index": index_operation["index"],
         "doc_type": index_operation["doc_type"],
         "id": "advanced-event-example-id-2",
-        "body": json.dumps({
+        "body": MessageUtils.dict_to_json({
             "id": "advanced-event-example-id-2",
             "message": event.payload,
             "source": "Advanced Transform Example"})
