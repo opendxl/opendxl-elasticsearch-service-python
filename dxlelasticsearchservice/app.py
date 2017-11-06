@@ -286,9 +286,7 @@ class ElasticsearchService(Application):
 
         self._service_unique_id = self._get_setting_from_config(
             self._GENERAL_CONFIG_SECTION,
-            self._GENERAL_SERVICE_UNIQUE_ID_PROP,
-            default_value=server_names[0]
-            if len(server_names) == 1 else None)
+            self._GENERAL_SERVICE_UNIQUE_ID_PROP)
 
         self._reload_transform_scripts_on_change = \
             self._get_setting_from_config(
@@ -353,11 +351,6 @@ class ElasticsearchService(Application):
                                api_name)
 
         if api_methods:
-            if not self._service_unique_id:
-                raise ValueError(
-                    "Required setting {} in section {} is empty".format(
-                        "serviceUniqueId", self._GENERAL_CONFIG_SECTION))
-
             logger.info("Registering service: elasticsearch_service")
             service = ServiceRegistrationInfo(
                 self._dxl_client,
@@ -365,13 +358,16 @@ class ElasticsearchService(Application):
 
             for api_method in api_methods:
                 api_method_name = api_method.__name__
-                topic = "{}/{}/{}".format(self._SERVICE_TYPE,
-                                          self._service_unique_id,
-                                          api_method_name)
+                topic = "{}{}/{}".format(
+                    self._SERVICE_TYPE,
+                    "/{}".format(self._service_unique_id) \
+                        if self._service_unique_id else "",
+                    api_method_name)
                 logger.info(
-                    "Registering request callback: %s_%s_%s_%s. Topic: %s.",
+                    "Registering request callback: %s%s_%s_%s. Topic: %s.",
                     "elasticsearch",
-                    self._service_unique_id,
+                    "_{}".format(self._service_unique_id) \
+                        if self._service_unique_id else "",
                     api_method_name,
                     "requesthandler",
                     topic)

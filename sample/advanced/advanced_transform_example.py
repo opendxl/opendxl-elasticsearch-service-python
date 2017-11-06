@@ -15,8 +15,6 @@ from common import *
 logging.getLogger().setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
-SERVICE_UNIQUE_ID = "sample"
-
 DOCUMENT_INDEX = "opendxl-elasticsearch-service-examples"
 DOCUMENT_TYPE = "advanced-transform-example-doc"
 DOCUMENT_IDS = ["advanced-event-example-id-1", "advanced-event-example-id-2"]
@@ -47,8 +45,7 @@ with DxlClient(config) as client:
 
     for document_id in DOCUMENT_IDS:
         # Create the get request
-        request_topic = "{}/{}/get".format(
-            ELASTICSEARCH_API_TOPIC, SERVICE_UNIQUE_ID)
+        request_topic = "{}/get".format(ELASTICSEARCH_API_TOPIC)
         req = Request(request_topic)
 
         # Set the payload for the get request

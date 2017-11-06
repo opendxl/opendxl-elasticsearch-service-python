@@ -14,8 +14,6 @@ from common import *
 logging.getLogger().setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
-SERVICE_UNIQUE_ID = "sample"
-
 DOCUMENT_INDEX = "opendxl-elasticsearch-service-examples"
 DOCUMENT_TYPE = "basic-example-doc"
 DOCUMENT_ID = "12345"
@@ -33,8 +31,7 @@ with DxlClient(config) as client:
     logger.info("Connected to DXL fabric.")
 
     # Create the index request
-    request_topic = "{}/{}/index".format(
-        ELASTICSEARCH_API_TOPIC, SERVICE_UNIQUE_ID)
+    request_topic = "{}/index".format(ELASTICSEARCH_API_TOPIC)
     index_request = Request(request_topic)
 
     # Set the payload for the index request
@@ -61,8 +58,7 @@ with DxlClient(config) as client:
         exit(1)
 
     # Create the get request
-    request_topic = "{}/{}/get".format(
-        ELASTICSEARCH_API_TOPIC, SERVICE_UNIQUE_ID)
+    request_topic = "{}/get".format(ELASTICSEARCH_API_TOPIC)
     get_request = Request(request_topic)
 
     # Set the payload for the get request
