@@ -1,9 +1,11 @@
+import inspect
 import logging
 import sys
 from threading import Lock
 
 from elasticsearch import Elasticsearch
-from elasticsearch.exceptions import ElasticsearchException, TransportError
+from elasticsearch.exceptions import ElasticsearchException,\
+    ImproperlyConfigured, TransportError
 
 from dxlbootstrap.util import MessageUtils
 from dxlclient.callbacks import EventCallback, RequestCallback
@@ -230,20 +232,27 @@ class ElasticsearchServiceRequestCallback(RequestCallback):
             response_data = self._api_method(**request_dict)
             MessageUtils.dict_to_json_payload(res, response_data)
 
-        except ElasticsearchException as ex:
+        except (ImproperlyConfigured, ElasticsearchException) as ex:
             error_str = str(ex)
             logger.exception("Elasticsearch exception handling request: %s",
                              error_str)
             res = ErrorResponse(
                 request,
                 error_message=MessageUtils.encode(error_str))
+
             error_dict = {
                 "module": ex.__module__,
                 "class": ex.__class__.__name__}
+            if isinstance(ex.info, dict):
+                error_info = ex.info
+            else:
+                error_info = {"class": ex.info.__class__.__name__,
+                              "error": ex.info.__str__()}
             if isinstance(ex, TransportError):
                 error_dict["data"] = {"status_code": ex.status_code,
                                       "error": ex.error,
-                                      "info": ex.info}
+                                      "info": error_info}
+
             MessageUtils.dict_to_json_payload(res, error_dict)
 
         except Exception as ex:
