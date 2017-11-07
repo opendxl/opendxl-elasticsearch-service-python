@@ -1,7 +1,7 @@
 Samples Configuration
 =====================
 
-The OpenDXL Elasticsearch Service distribution contains a configuration file (``dxlclient.config``) located
+The Elasticsearch DXL Python Service distribution contains a configuration file (``dxlclient.config``) located
 in the ``sample`` sub-directory that must be populated in order for the samples to connect to the DXL fabric.
 
 The steps to populate this configuration file are the same as those documented in the `OpenDXL Python SDK`, see the

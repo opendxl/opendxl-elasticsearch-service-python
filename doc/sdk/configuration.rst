@@ -1,7 +1,7 @@
 Configuration
 =============
 
-The OpenDXL Elasticsearch Service application requires a set of configuration files to operate.
+The Elasticsearch DXL Python Service application requires a set of configuration files to operate.
 
 This distribution contains a ``config`` sub-directory that includes the configuration files that must
 be populated prior to running the application.
@@ -44,7 +44,7 @@ DXL Client Configuration File (dxlclient.config)
 
 .. _dxl_service_config_file_label:
 
-OpenDXL Elasticsearch Service (dxlelasticsearchservice.config)
+Elasticsearch DXL Python Service (dxlelasticsearchservice.config)
 ----------------------------------------
 
     The required ``dxlelasticsearchservice.config`` file is used to configure the application.

@@ -15,14 +15,21 @@ logger = logging.getLogger(__name__)
 
 class ElasticsearchService(Application):
     """
-    The "OpenDXL Elasticsearch Service" application class.
+    The "Elasticsearch DXL Python Service" application class.
     """
 
+    #: The DXL service type for the Elasticsearch API
     _SERVICE_TYPE = "/opendxl-elasticsearch/service/elasticsearch-api"
 
+    #: The name of the "General" section within the application configuration
+    #: file
     _GENERAL_CONFIG_SECTION = "General"
 
+    #: The property used to specify the list of server name sections in the
+    #: application configuration file
     _GENERAL_SERVER_NAMES_CONFIG_PROP = "serverNames"
+    #: The property used to specify the list of event group name sections in
+    #: the application configuration file
     _GENERAL_EVENT_GROUP_NAMES_CONFIG_PROP = "eventGroupNames"
     _GENERAL_API_NAMES_CONFIG_PROP = "apiNames"
     _GENERAL_SERVICE_UNIQUE_ID_PROP = "serviceUniqueId"
@@ -360,14 +367,14 @@ class ElasticsearchService(Application):
                 api_method_name = api_method.__name__
                 topic = "{}{}/{}".format(
                     self._SERVICE_TYPE,
-                    "/{}".format(self._service_unique_id) \
-                        if self._service_unique_id else "",
+                    "/{}".format(self._service_unique_id)
+                    if self._service_unique_id else "",
                     api_method_name)
                 logger.info(
                     "Registering request callback: %s%s_%s_%s. Topic: %s.",
                     "elasticsearch",
-                    "_{}".format(self._service_unique_id) \
-                        if self._service_unique_id else "",
+                    "_{}".format(self._service_unique_id)
+                    if self._service_unique_id else "",
                     api_method_name,
                     "requesthandler",
                     topic)

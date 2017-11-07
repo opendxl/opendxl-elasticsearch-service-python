@@ -1,5 +1,5 @@
-OpenDXL Elasticsearch Service
-=================
+Elasticsearch DXL Python Service
+================================
 
 Introduction
 ------------
