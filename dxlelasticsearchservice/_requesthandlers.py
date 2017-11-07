@@ -96,6 +96,7 @@ class ElasticsearchServiceEventCallback(EventCallback):
         if self._transform_script:
             index_operations = self._get_transformed_operations(
                 event, index_parameters)
+            index_operations = index_operations if index_operations else ()
         else:
             index_operations = [index_parameters]
 

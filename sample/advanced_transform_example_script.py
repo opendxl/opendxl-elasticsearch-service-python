@@ -45,6 +45,7 @@ def on_event(event, index_operation):
     :rtype: dict or list(dict)
     """
     logger.info("Event payload received for transform: %s", event.payload)
+    logger.info("Index operation received for transform: %s", index_operation)
 
     # Modify the "id" and "body" elements in the index operation dictionary.
     event_payload = MessageUtils.decode_payload(event)

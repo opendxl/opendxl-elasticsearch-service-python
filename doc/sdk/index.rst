@@ -19,25 +19,53 @@ Installation and Configuration
 	configuration
 	running
 
+Service Methods
+---------------
+
+.. toctree::
+	:maxdepth: 1
+
+	servicemethods
+
+Docker
+------
+
+.. toctree::
+	:maxdepth: 1
+
+	docker
+
 Samples
 -------
 
 Configuration
 
 .. toctree::
-    :maxdepth: 1
+	:maxdepth: 1
 
-    sampleconfig
+	sampleconfig
 
 Basic
 
-    TODO: Provide samples documentation
+.. toctree::
+	:maxdepth: 1
+
+	basicindexexample
+	basicupdateexample
+	basicdeleteexample
+	basiceventexample
+
+Advanced
+
+.. toctree::
+	:maxdepth: 1
+
+	advancedtransformexample
 
 Python API
 ----------
 
 .. toctree::
-    :titlesonly:
+	:titlesonly:
 
-    dxlelasticsearchservice
-
+	dxlelasticsearchservice
