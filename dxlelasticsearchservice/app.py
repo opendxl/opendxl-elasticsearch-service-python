@@ -18,11 +18,11 @@ class ElasticsearchService(Application):
     The "Elasticsearch DXL Python Service" application class.
     """
 
-    #: The DXL service type for the Elasticsearch API
+    #: The DXL service type for the Elasticsearch API.
     _SERVICE_TYPE = "/opendxl-elasticsearch/service/elasticsearch-api"
 
     #: The name of the "General" section within the application configuration
-    #: file
+    #: file.
     _GENERAL_CONFIG_SECTION = "General"
 
     #: The property used to specify the list of server name sections in the
@@ -31,35 +31,92 @@ class ElasticsearchService(Application):
     #: The property used to specify the list of event group name sections in
     #: the application configuration file
     _GENERAL_EVENT_GROUP_NAMES_CONFIG_PROP = "eventGroupNames"
+    #: The property used to specify the list of accessible Elasticsearch APIs
+    #: in the application configuration file
     _GENERAL_API_NAMES_CONFIG_PROP = "apiNames"
+    #: The property used to specify a unique service discriminator to the
+    #: application configuration file. The discriminator, if set, is added to
+    #: each of the Elasticsearch API topics registered with the DXL fabric.
     _GENERAL_SERVICE_UNIQUE_ID_PROP = "serviceUniqueId"
+    #: The property used to specify in the application configuration file
+    #: whether any registered transform scripts should be reloaded if changed
+    #: while the service is running.
     _GENERAL_RELOAD_TRANSFORM_SCRIPTS_ON_CHANGE = \
         "reloadTransformScriptsOnChange"
 
+    #: The property used to specify the hostname or IP address of an
+    #: Elasticsearch server in the application configuration file.
     _SERVER_HOST_CONFIG_PROP = "host"
+    #: The property used to specify the port number of an Elasticsearch
+    #: server in the application configuration file.
     _SERVER_PORT_CONFIG_PROP = "port"
+    #: The property used to specify in the application configuration file a
+    #: prefix to add to the front of the URL path for any requests made to an
+    #: Elasticsearch server.
     _SERVER_URL_PREFIX_CONFIG_PROP = "urlPrefix"
+    #: The property used to specify in the application configuration file an
+    #: username to supply for authentication to the Elasticsearch server.
     _SERVER_USER_CONFIG_PROP = "user"
+    #: The property used to specify in the application configuration file a
+    #: password to supply for authentication to the Elasticsearch server.
     _SERVER_PASSWORD_CONFIG_PROP = "password"
+    #: The property used to specify in the application configuration file
+    #: whether or not SSL/TLS should be used when communicating with an
+    #: Elasticsearch server.
     _SERVER_USE_SSL_CONFIG_PROP = "useSSL"
+    #: The property used to specify in the application configuration file
+    #: whether or not the Elasticsearch server certificate was signed by
+    #: a valid certificate authority.
     _SERVER_VERIFY_CERTIFICATE_CONFIG_PROP = "verifyCertificate"
+    #: The property used to specify in the application configuration file
+    #: a path to a bundle of trusted CA certificates to use for validating the
+    #: Elasticsearch server's certificate.
     _SERVER_VERIFY_CERT_BUNDLE = "verifyCertBundle"
+    #: The property used to specify in the application configuration file
+    #: how the name in the Elasticsearch server's certificate should be
+    #: validated. If set to "yes" or not specified, the name must match the
+    #: value in the "host" setting. If set to "no", the hostname is not
+    #: validated. If set to a different value, the hostname must match the
+    #: value in the setting. For example, if the value is set to "myserver",
+    #: the name in the Elasticsearch server certificate must be "myserver" in
+    #: order for the connection to be allowed.
     _SERVER_VERIFY_HOST_NAME = "verifyHostName"
+    #: The property used to specify in the application configuration file a
+    #: path to a client certificate which is supplied to the Elasticsearch
+    #: server for TLS/SSL connections.
     _SERVER_CLIENT_CERTIFICATE = "clientCertificate"
+    #: The property used to specify in the application configuration file a
+    #: private key to use when making TLS/SSL connnections to an Elasticsearch
+    #: server.
     _SERVER_CLIENT_KEY = "clientKey"
 
-    _EVENT_TOPICS_CONFIG_PROP = "topics"
-    _EVENT_DOCUMENT_INDEX_PROP = "documentIndex"
-    _EVENT_DOCUMENT_TYPE_PROP = "documentType"
-    _EVENT_ID_FIELD_NAME_PROP = "idFieldName"
-    _EVENT_TRANSFORM_SCRIPT_PROP = "transformScript"
+    #: The property used to specify in the application configuration file a
+    #: list of DXL topic names to associate with the event group.
+    _EVENT_GROUP_TOPICS_CONFIG_PROP = "topics"
+    #: The property used to specify in the application configuration file the
+    #: 'index' in which documents for event group events should be stored
+    #: in Elasticsearch.
+    _EVENT_GROUP_DOCUMENT_INDEX_PROP = "documentIndex"
+    #: The property used to specify in the application configuration file the
+    #: 'type' in which documents for event group events should be stored
+    #: in Elasticsearch.
+    _EVENT_GROUP_DOCUMENT_TYPE_PROP = "documentType"
+    #: The property used to specify in the application configuration file the
+    #: name of a field in the event payload whose correpsonding value should
+    #: be used as the ID of the event group document stored to Elasticsearch.
+    _EVENT_GROUP_ID_FIELD_NAME_PROP = "idFieldName"
+    #: The property used to specify in the application configuration file a
+    #: path to a Python script which will receive the event payload and
+    #: optionally transform it into zero, one, or more documents for
+    #: storage into Elasticsearch.
+    _EVENT_GROUP_TRANSFORM_SCRIPT_PROP = "transformScript"
 
     def __init__(self, config_dir):
         """
         Constructor parameters:
 
         :param config_dir: The location of the configuration files for the
-            application
+            application.
         """
         super(ElasticsearchService,
               self).__init__(config_dir, "dxlelasticsearchservice.config")
@@ -73,7 +130,10 @@ class ElasticsearchService(Application):
     def client(self):
         """
         The DXL client used by the application to communicate with the DXL
-        fabric
+        fabric.
+
+        :return: The DXL client
+        :rtype: dxlclient.client.DxlClient
         """
         return self._dxl_client
 
@@ -81,7 +141,10 @@ class ElasticsearchService(Application):
     def config(self):
         """
         The application configuration (as read from the
-        "dxlelasticsearchservice.config" file)
+        "dxlelasticsearchservice.config" file).
+
+        :return: The application configuration
+        :rtype: ConfigParser
         """
         return self._config
 
@@ -99,6 +162,7 @@ class ElasticsearchService(Application):
         :param in_path: The specified path
         :return: An absolute path for a file specified in the configuration
             file
+        :rtype: str
         """
         if not os.path.isfile(in_path) and not os.path.isabs(in_path):
             config_rel_path = os.path.join(self._config_dir, in_path)
@@ -112,13 +176,25 @@ class ElasticsearchService(Application):
                                  raise_exception_if_missing=False,
                                  is_file_path=False):
         """
+        Get the value for a setting in the application configuration file.
 
-        :param section:
-        :param setting:
-        :param default_value:
-        :param type return_type:
-        :param raise_exception_if_missing:
-        :return:
+        :param str section: Name of the section in which the setting resides.
+        :param str setting: Name of the setting.
+        :param default_value: Value to return if the setting is not found in
+            the configuration file.
+        :param type return_type: Expected 'type' of the value to return.
+        :param bool raise_exception_if_missing: Whether or not to raise an
+            exception if the setting is missing from the configuration file.
+        :param bool is_file_path: Whether or not the value for the setting
+            represents a file path. If set to 'True' but a file cannot be
+            found for the setting, a ValueError is raised.
+        :return: Value for the setting.
+        :raises ValueError: If the setting cannot be found in the configuration
+            file and 'raise_exception_if_missing' is set to 'True', the
+            type of the setting found in the configuration file does not
+            match the value specified for 'return_type', or 'is_file_path' is
+            set to 'True' but no file can be found which matches the value
+            read for the setting.
         """
         config = self._config
         if self.config.has_option(section, setting):
@@ -164,6 +240,15 @@ class ElasticsearchService(Application):
         return return_value
 
     def _get_server_settings(self, server_name):
+        """
+        Retrieve settings for an Elasticsearch server from the application
+        configuration.
+
+        :param str server_name: Name of the server section in the application
+            configuration file.
+        :return: Dictionary of server settings.
+        :rtype: dict
+        """
         server = {
             "host": self._get_setting_from_config(
                 server_name, self._SERVER_HOST_CONFIG_PROP,
@@ -236,31 +321,40 @@ class ElasticsearchService(Application):
         return server
 
     def _get_event_group_settings(self, event_group):
+        """
+        Retrieve settings for an event group from the application
+        configuration.
+
+        :param str event_group: Name of the event group section in the
+            application configuration file.
+        :return: Dictionary of event group settings.
+        :rtype: dict
+        """
         return {
             "topics": self._get_setting_from_config(
                 event_group,
-                self._EVENT_TOPICS_CONFIG_PROP,
+                self._EVENT_GROUP_TOPICS_CONFIG_PROP,
                 return_type=list,
                 raise_exception_if_missing=True),
             "document_index": self._get_setting_from_config(
                 event_group,
-                self._EVENT_DOCUMENT_INDEX_PROP,
+                self._EVENT_GROUP_DOCUMENT_INDEX_PROP,
                 raise_exception_if_missing=True),
             "document_type": self._get_setting_from_config(
                 event_group,
-                self._EVENT_DOCUMENT_TYPE_PROP,
+                self._EVENT_GROUP_DOCUMENT_TYPE_PROP,
                 raise_exception_if_missing=True),
             "id_field_name": self._get_setting_from_config(
                 event_group,
-                self._EVENT_ID_FIELD_NAME_PROP),
+                self._EVENT_GROUP_ID_FIELD_NAME_PROP),
             "transform_script": self._get_setting_from_config(
                 event_group,
-                self._EVENT_TRANSFORM_SCRIPT_PROP,
+                self._EVENT_GROUP_TRANSFORM_SCRIPT_PROP,
                 is_file_path=True)}
 
     def on_load_configuration(self, config):
         """
-        Invoked after the application-specific configuration has been loaded
+        Invoked after the application-specific configuration has been loaded.
 
         This callback provides the opportunity for the application to parse
         additional configuration properties.
@@ -324,7 +418,6 @@ class ElasticsearchService(Application):
                 event_group_name,
                 event_group_info["document_index"],
                 event_group_info["document_type"],
-                event_group_info["topics"],
                 event_group_info["id_field_name"],
                 event_group_info["transform_script"],
                 self._reload_transform_scripts_on_change)
@@ -337,6 +430,14 @@ class ElasticsearchService(Application):
                                         separate_thread=False)
 
     def _get_api_method(self, api_name):
+        """
+        Retrieve an instance method from the Elasticsearch client object.
+
+        :param str api_name: String name of the instance method object to
+            retrieve from the Elasticsearch client object.
+        :return: Matching instancemethod if available, else None.
+        :rtype: instancemethod
+        """
         api_method = None
         if hasattr(self._es_client, api_name):
             api_attr = getattr(self._es_client, api_name)

@@ -44,7 +44,7 @@ with DxlClient(config) as client:
     res = client.sync_request(req, timeout=30)
 
     if res.message_type != Message.MESSAGE_TYPE_ERROR:
-        # Display results for the index request
+        # Display results for the delete request
         res_dict = MessageUtils.json_payload_to_dict(res)
         print("Response to the delete request:\n{}".format(
             MessageUtils.dict_to_json(res_dict, pretty_print=True)))

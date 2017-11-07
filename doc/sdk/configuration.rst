@@ -45,7 +45,7 @@ DXL Client Configuration File (dxlclient.config)
 .. _dxl_service_config_file_label:
 
 Elasticsearch DXL Python Service (dxlelasticsearchservice.config)
-----------------------------------------
+-----------------------------------------------------------------
 
     The required ``dxlelasticsearchservice.config`` file is used to configure the application.
 

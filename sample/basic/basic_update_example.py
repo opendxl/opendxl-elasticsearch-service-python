@@ -47,7 +47,7 @@ with DxlClient(config) as client:
     update_response = client.sync_request(update_request, timeout=30)
 
     if update_response.message_type != Message.MESSAGE_TYPE_ERROR:
-        # Display results for the index request
+        # Display results for the update request
         update_response_dict = MessageUtils.json_payload_to_dict(
             update_response)
         print("Response to the update request:\n{}".format(

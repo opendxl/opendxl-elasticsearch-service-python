@@ -1,4 +1,3 @@
-import inspect
 import logging
 import sys
 from threading import Lock
@@ -11,11 +10,11 @@ from dxlbootstrap.util import MessageUtils
 from dxlclient.callbacks import EventCallback, RequestCallback
 from dxlclient.message import ErrorResponse, Response
 
-# transform scripts are loaded underneath the dxlelasticsearchservice.transform
-# module. Including this import to avoid a warning that would otherwise appear
-# when the transform scripts are loaded.
+# transform scripts are loaded underneath the
+# dxlelasticsearchservice._transform module. Including this import to avoid a
+# warning that would otherwise appear when the transform scripts are loaded.
 
-import dxlelasticsearchservice.transform
+import dxlelasticsearchservice._transform
 
 # Python's imp module, used by the dxlelasticsearchservice for loading
 # transform scripts, was deprecated in Python 3.4 in favor of importlib
@@ -41,22 +40,36 @@ logger = logging.getLogger(__name__)
 
 class ElasticsearchServiceEventCallback(EventCallback):
     """
+    Event callback used to store event payloads to Elasticsearch
     """
 
-    _TRANSFORM_MODULE_BASE_NAME = "dxlelasticsearchservice.transform"
+    #: Package under which transform script modules are loaded
+    _TRANSFORM_PACKAGE_NAME = "dxlelasticsearchservice._transform"
 
     def __init__(self, es_client, event_group_name, document_index,
-                 document_type, topics, id_field_name,
+                 document_type, id_field_name,
                  transform_script, reload_transform_scripts_on_change):
         """
-        :param Elasticsearch es_client: The elasticsearch client
+        Constructor parameters:
+
+        :param Elasticsearch es_client: The Elasticsearch client.
+        :param str event_group_name: The event group name.
+        :param str document_index: Elasticsearch index for documents to store.
+        :param str document_type: Elasticsearch type for documents to store.
+        :param str id_field_name: Name of the field in an event payload which
+            contains the value for the corresponding Elasticsearch document ID.
+        :param str transform_script: Name of a transform Python script to load
+            and pass event payloads to for transformation into Elasticsearch
+            document operations.
+        :param bool reload_transform_scripts_on_change: Whether or not to
+            reload transform scripts if they change while the service is
+            running.
         """
         super(ElasticsearchServiceEventCallback, self).__init__()
         self._es_client = es_client
         self._event_group_name = event_group_name
         self._document_index = document_index
         self._document_type = document_type
-        self._topics = topics
         self._id_field_name = id_field_name
         self._transform_script = transform_script
 
@@ -71,6 +84,8 @@ class ElasticsearchServiceEventCallback(EventCallback):
 
     def on_event(self, event):
         """
+        Callback invoked when an event is received.
+
         :param dxlclient.message.Event event: The event
         """
         if event and event.payload:
@@ -101,7 +116,23 @@ class ElasticsearchServiceEventCallback(EventCallback):
                 raise
 
     def _get_transformed_operations(self, event, index_parameters):
+        """
+        Pass along an event and a default set of parameters for an
+        Elasticsearch document index operation to a Python transform script, if
+        one is defined for the event group.
+
+        :param dxlclient.message.Event event: The event
+        :param dict index_parameters: Default set of parameters to use for
+            the Elasticsearch 'index' operation.
+        :return: A list of dictionaries containing parameters for an
+            Elasticsearch 'index' operation to perform.
+        :rtype: list(dict)
+        """
         if self._reload_transform_scripts_on_change:
+            # This implementation reloads the transform script on each event
+            # received, regardless of whether the script has changed or not.
+            # This could be made much more efficient with at least an mtime
+            # check on the script.
             with self._transform_lock:
                 index_operations = self._get_transform_function()(
                     event, index_parameters)
@@ -115,7 +146,15 @@ class ElasticsearchServiceEventCallback(EventCallback):
         return index_operations
 
     def _get_transform_function(self):
-        full_module_name = "{}.{}".format(self._TRANSFORM_MODULE_BASE_NAME,
+        """
+        Load the transform script and return a reference to the "on_event"
+        function from it.
+
+        :return: The loaded function.
+        :raises ValueError: If no "on_event" function can be found within the
+            module loaded from the transform script.
+        """
+        full_module_name = "{}.{}".format(self._TRANSFORM_PACKAGE_NAME,
                                           self._event_group_name)
 
         logger.debug("Loading %s from %s", full_module_name,
@@ -150,6 +189,16 @@ class ElasticsearchServiceEventCallback(EventCallback):
         return transform_function
 
     def _get_index_parameters(self, event):
+        """
+        Get parameters for an Elasticsearch 'index' operation for use in
+        storing the payload from the supplied event to Elasticsearch.
+
+        :param dxlclient.message.Event event: The event.
+        :return: A dictionary with parameters for the 'index' operation. If
+            the event payload cannot be converted into a JSON document or if
+            the ID cannot be derived from the document, None is returned.
+        :rtype: dict
+        """
         body = None
         document_id = None
 
@@ -185,12 +234,30 @@ class ElasticsearchServiceEventCallback(EventCallback):
 
     @staticmethod
     def _get_index_parameter_text(operation, name, description):
+        """
+        Get a formatted string for logging document index parameters.
+
+        :param dict operation: Dictionary containing the index operation
+            parameters.
+        :param str name: Name of the parameter to retrieve.
+        :param str description: Text description for the parameter.
+        :return: Formatted string for logging.
+        :rtype: str
+        """
         value = operation.get(name)
         return ", {}: {}".format(description,
                                  value if value else "<None>")
 
     def _log_index_message(self, log_function, message, topic,
                            index_operation):
+        """
+        Log a message with details for an Elasticsearch index operation.
+
+        :param log_function: Function or method which logs the message.
+        :param str message: Base message to be logged.
+        :param str topic: DXL topic associated with the index operation.
+        :param dict index_operation: Parameters for the index operation.
+        """
         log_function("%s. Event: %s, Topic: %s%s%s%s.",
                      message,
                      self._event_group_name,
@@ -208,17 +275,27 @@ class ElasticsearchServiceEventCallback(EventCallback):
 
 class ElasticsearchServiceRequestCallback(RequestCallback):
     """
+    Request callback used to invoke the Elasticsearch REST API.
     """
     def __init__(self, app, api_method):
+        """
+        Constructor parameters:
+
+        :param dxlelasticsearchservice.app.ElasticsearchService app: The
+            Elasticsearch service application
+        :param api_method: Method or function to invoke when a request
+            is received.
+        """
         super(ElasticsearchServiceRequestCallback, self).__init__()
         self._app = app
         self._api_method = api_method
 
     def on_request(self, request):
         """
+        Callback invoked when a request is received.
+
         :param dxlclient.message.Request request: The request
         """
-        MessageUtils.decode_payload(request)
         logger.info("Request received on topic '%s'",
                     request.destination_topic)
         logger.debug("Payload for topic %s: %s", request.destination_topic,
@@ -246,6 +323,11 @@ class ElasticsearchServiceRequestCallback(RequestCallback):
             if isinstance(ex.info, dict):
                 error_info = ex.info
             else:
+                # If the error info is not already a dict, make a dict with
+                # just the original class name of the error info object and
+                # an associated error message. This is done to ensure that the
+                # error response can be serialized into JSON for the DXL
+                # response payload.
                 error_info = {"class": ex.info.__class__.__name__,
                               "error": ex.info.__str__()}
             if isinstance(ex, TransportError):
