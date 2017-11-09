@@ -1,0 +1,7 @@
+dxlelasticsearchservice\.app module
+===================================
+
+.. automodule:: dxlelasticsearchservice.app
+    :members:
+    :undoc-members:
+    :show-inheritance:

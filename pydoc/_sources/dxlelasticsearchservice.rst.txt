@@ -1,0 +1,17 @@
+dxlelasticsearchservice package
+===============================
+
+Submodules
+----------
+
+.. toctree::
+
+   dxlelasticsearchservice.app
+
+Module contents
+---------------
+
+.. automodule:: dxlelasticsearchservice
+    :members:
+    :undoc-members:
+    :show-inheritance:

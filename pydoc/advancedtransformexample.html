@@ -1,0 +1,411 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Advanced Transform Example &#8212; Elasticsearch DXL Python Service 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="dxlelasticsearchservice package" href="dxlelasticsearchservice.html" />
+    <link rel="prev" title="Basic Event Example" href="basiceventexample.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dxlelasticsearchservice.html" title="dxlelasticsearchservice package"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="basiceventexample.html" title="Basic Event Example"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="advanced-transform-example">
+<h1>Advanced Transform Example<a class="headerlink" href="#advanced-transform-example" title="Permalink to this headline">¶</a></h1>
+<p>This sample, similar to the <a class="reference internal" href="basiceventexample.html"><span class="doc">Basic Event Example</span></a>, sends an event to a DXL
+broker. The DXL Elasticsearch service receives a notification for the event and
+stores the payload into documents on an Elasticsearch server. The sample then
+retrieves the contents of the stored documents via a call to the Elasticsearch
+<code class="docutils literal"><span class="pre">Get</span></code> API. The sample displays the results of the <code class="docutils literal"><span class="pre">Get</span></code> call.</p>
+<p>The most significant difference between the behavior for this sample and the
+<a class="reference internal" href="basiceventexample.html"><span class="doc">Basic Event Example</span></a> is that this sample configures a custom Python script
+which the Elasticsearch service invokes to transform the content of the event
+payload. The transform script defines two separate Elasticsearch documents
+which are stored for the event.</p>
+<p>For more information on the Elasticsearch <code class="docutils literal"><span class="pre">Get</span></code> API, see the
+<a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.get">Elasticsearch Python Get API</a>
+and <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html">Elasticsearch REST Get API</a>
+documentation.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The samples configuration step has been completed (see <a class="reference internal" href="sampleconfig.html"><span class="doc">Samples Configuration</span></a>).</li>
+<li>The Elasticsearch API DXL service is running, using the <code class="docutils literal"><span class="pre">sample</span></code>
+configuration (see <a class="reference internal" href="running.html"><span class="doc">Running</span></a>).</li>
+</ul>
+</div>
+<div class="section" id="running">
+<h2>Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h2>
+<p>To run this sample execute the <code class="docutils literal"><span class="pre">sample/basic/advanced_transform_example.py</span></code>
+script as follows:</p>
+<blockquote>
+<div><div class="highlight-shell"><div class="highlight"><pre><span></span>python sample/basic/advanced_transform_example.py
+</pre></div>
+</div>
+</div></blockquote>
+<p>The output should appear similar to the following:</p>
+<blockquote>
+<div><div class="highlight-shell"><div class="highlight"><pre><span></span>Waiting <span class="k">for</span> event payloads to be stored in Elasticsearch...
+Response to the get request <span class="k">for</span> id <span class="s1">&#39;advanced-event-example-id-1&#39;</span>:
+<span class="o">{</span>
+    <span class="s2">&quot;_id&quot;</span>: <span class="s2">&quot;advanced-event-example-id-1&quot;</span>,
+    <span class="s2">&quot;_index&quot;</span>: <span class="s2">&quot;opendxl-elasticsearch-service-examples&quot;</span>,
+    <span class="s2">&quot;_source&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;id&quot;</span>: <span class="s2">&quot;advanced-event-example-id-1&quot;</span>,
+        <span class="s2">&quot;message&quot;</span>: <span class="s2">&quot;Hello from OpenDXL&quot;</span>,
+        <span class="s2">&quot;source&quot;</span>: <span class="s2">&quot;Advanced Transform Example&quot;</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;_type&quot;</span>: <span class="s2">&quot;advanced-transform-example-doc&quot;</span>,
+    <span class="s2">&quot;_version&quot;</span>: <span class="m">1</span>,
+    <span class="s2">&quot;found&quot;</span>: <span class="nb">true</span>
+<span class="o">}</span>
+Response to the get request <span class="k">for</span> id <span class="s1">&#39;advanced-event-example-id-2&#39;</span>:
+<span class="o">{</span>
+    <span class="s2">&quot;_id&quot;</span>: <span class="s2">&quot;advanced-event-example-id-2&quot;</span>,
+    <span class="s2">&quot;_index&quot;</span>: <span class="s2">&quot;opendxl-elasticsearch-service-examples&quot;</span>,
+    <span class="s2">&quot;_source&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;id&quot;</span>: <span class="s2">&quot;advanced-event-example-id-2&quot;</span>,
+        <span class="s2">&quot;message&quot;</span>: <span class="s2">&quot;Hello from OpenDXL&quot;</span>,
+        <span class="s2">&quot;source&quot;</span>: <span class="s2">&quot;Advanced Transform Example&quot;</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;_type&quot;</span>: <span class="s2">&quot;advanced-transform-example-doc&quot;</span>,
+    <span class="s2">&quot;_version&quot;</span>: <span class="m">1</span>,
+    <span class="s2">&quot;found&quot;</span>: <span class="nb">true</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="details">
+<h2>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
+<p>In order to enable the use of the <code class="docutils literal"><span class="pre">get</span></code> API, the API name is listed in the
+<code class="docutils literal"><span class="pre">apiNames</span></code> setting under the <code class="docutils literal"><span class="pre">[General]</span></code> section in the <code class="docutils literal"><span class="pre">sample</span></code>
+“dxlelasticsearchservice.config” file that the service uses:</p>
+<blockquote>
+<div><div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[General]</span>
+<span class="na">apiNames</span><span class="o">=</span><span class="s">...,get,...</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The “dxlelasticsearchservice.config” file also includes some settings which
+instruct the service to store the event payload into an Elasticsearch document:</p>
+<blockquote>
+<div><div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[General]</span>
+<span class="na">eventGroupNames</span><span class="o">=</span><span class="s">...,advanced_transform_example</span>
+
+<span class="k">[advanced_transform_example]</span>
+<span class="na">topics</span><span class="o">=</span><span class="s">/sample/elasticsearch/advancedtransform</span>
+<span class="na">documentIndex</span><span class="o">=</span><span class="s">opendxl-elasticsearch-service-examples</span>
+<span class="na">documentType</span><span class="o">=</span><span class="s">advanced-transform-example-doc</span>
+<span class="na">transformScript</span><span class="o">=</span><span class="s">advanced_transform_example_script.py</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <code class="docutils literal"><span class="pre">advanced_transform_example</span></code> event group section lists the name of the
+event topic which the sample sends,
+<code class="docutils literal"><span class="pre">/sample/elasticsearch/advancedtransform</span></code>. The payload for each matching
+event received is passed into an <code class="docutils literal"><span class="pre">on_event</span></code> function defined by the
+<code class="docutils literal"><span class="pre">advanced_transform_example_script.py</span></code> script. The <code class="docutils literal"><span class="pre">on_event</span></code> function
+transforms the event payload into parameters for two corresponding documents
+which are stored to the Elasticsearch server. See the code snippets below for
+more information on the transform script.</p>
+<p>For more information on the configuration, see the
+<a class="reference internal" href="configuration.html#dxl-service-config-file-label"><span class="std std-ref">Service Configuration File</span></a> section.</p>
+<p>The majority of the sample code is shown below:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create the client</span>
+<span class="k">with</span> <span class="n">DxlClient</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+
+    <span class="c1"># Connect to the fabric</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Connected to DXL fabric.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create the event</span>
+    <span class="n">event</span> <span class="o">=</span> <span class="n">Event</span><span class="p">(</span><span class="n">EVENT_TOPIC</span><span class="p">)</span>
+
+    <span class="c1"># Set the payload</span>
+    <span class="n">MessageUtils</span><span class="o">.</span><span class="n">encode_payload</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="s2">&quot;Hello from OpenDXL&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Send the event</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Waiting for event payloads to be stored in Elasticsearch...&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">document_id</span> <span class="ow">in</span> <span class="n">DOCUMENT_IDS</span><span class="p">:</span>
+        <span class="c1"># Create the get request</span>
+        <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;{}/get&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ELASTICSEARCH_API_TOPIC</span><span class="p">)</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">request_topic</span><span class="p">)</span>
+
+        <span class="c1"># Set the payload for the get request</span>
+        <span class="n">MessageUtils</span><span class="o">.</span><span class="n">dict_to_json_payload</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">DOCUMENT_INDEX</span><span class="p">,</span>
+            <span class="s2">&quot;doc_type&quot;</span><span class="p">:</span> <span class="n">DOCUMENT_TYPE</span><span class="p">,</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">document_id</span><span class="p">})</span>
+
+        <span class="n">tries_remaining</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="c1"># Send up to 5 requests to the elasticsearch DXL service to try to</span>
+        <span class="c1"># retrieve the document that should be stored for the event.</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_request</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">res</span><span class="o">.</span><span class="n">message_type</span> <span class="o">==</span> <span class="n">Message</span><span class="o">.</span><span class="n">MESSAGE_TYPE_ERROR</span> \
+                <span class="ow">and</span> <span class="n">tries_remaining</span><span class="p">:</span>
+            <span class="n">tries_remaining</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">res</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_request</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">message_type</span> <span class="o">!=</span> <span class="n">Message</span><span class="o">.</span><span class="n">MESSAGE_TYPE_ERROR</span><span class="p">:</span>
+            <span class="c1"># Display results for the get request</span>
+            <span class="n">res_dict</span> <span class="o">=</span> <span class="n">MessageUtils</span><span class="o">.</span><span class="n">json_payload_to_dict</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Response to the get request for id &#39;{}&#39;:</span><span class="se">\n</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">document_id</span><span class="p">,</span>
+                <span class="n">MessageUtils</span><span class="o">.</span><span class="n">dict_to_json</span><span class="p">(</span><span class="n">res_dict</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Error invoking service with topic &#39;{}&#39; for id &#39;{}&#39;: {} ({})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">request_topic</span><span class="p">,</span> <span class="n">document_id</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">error_message</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">error_code</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">payload</span><span class="p">:</span>
+                <span class="c1"># Display the payload in the error response</span>
+                <span class="n">res_dict</span> <span class="o">=</span> <span class="n">MessageUtils</span><span class="o">.</span><span class="n">json_payload_to_dict</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+                <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Error payload:</span><span class="se">\n</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                    <span class="n">MessageUtils</span><span class="o">.</span><span class="n">dict_to_json</span><span class="p">(</span><span class="n">res_dict</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>After connecting to the DXL fabric, an event is sent to the fabric.</p>
+<p>Upon receipt of a notification for the event, the DXL Elasticsearch service
+passes the event information along to the <code class="docutils literal"><span class="pre">on_event</span></code> function in the
+transform script configured for the event group. The script is named
+<code class="docutils literal"><span class="pre">advanced_transform_example_script.py</span></code> and resides the <code class="docutils literal"><span class="pre">sample</span></code> directory.
+The majority of the code for the <code class="docutils literal"><span class="pre">advanced_transform_example_script.py</span></code>
+script is below:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">on_event</span><span class="p">(</span><span class="n">event</span><span class="p">,</span> <span class="n">index_operation</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Callback invoked with content received for a DXL event. The callback should</span>
+<span class="sd">    return a dictionary (or list of dictionaries) with parameters for the</span>
+<span class="sd">    Elasticsearch index operation(s) that the service should perform.</span>
+
+<span class="sd">    The elements for each dictionary returned should correspond to parameters</span>
+<span class="sd">    in the `Elasticsearch Python Index API &lt;https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.index&gt;`__.</span>
+<span class="sd">    For example, the value for the &quot;doc_type&quot; element in the dictionary will be</span>
+<span class="sd">    supplied as the &quot;doc_type&quot; parameter for the Elasticsearch &quot;index&quot;</span>
+<span class="sd">    operation.</span>
+
+<span class="sd">    :param dxlclient.message.Event event: The event which was received.</span>
+<span class="sd">    :param dict index_operation: A dict with a set of parameters configured</span>
+<span class="sd">        for storing the event payload into Elasticsearch. The dictionary</span>
+<span class="sd">        should include the following:</span>
+
+<span class="sd">        .. code-block::python</span>
+
+<span class="sd">        { &quot;index&quot;: &quot;&lt;documentIndex value from the application config&gt;&quot;,</span>
+<span class="sd">          &quot;doc_type&quot;: &quot;&lt;documentType value from the application config&gt;&quot;,</span>
+<span class="sd">          &quot;body&quot;: &quot;&lt;payload from the event parameter&gt;&quot;,</span>
+<span class="sd">          &quot;id&quot;: &quot;&lt;id from event payload&gt;&quot; }</span>
+
+<span class="sd">    If the event payload could be converted into a dict from JSON, the</span>
+<span class="sd">    value for the &quot;body&quot; element will be a dict. Otherwise, the payload</span>
+<span class="sd">    will be a str.</span>
+
+<span class="sd">    The value for the &quot;id&quot; element is pulled from the value for the key</span>
+<span class="sd">    in the event payload which corresponds to the &quot;idFieldName&quot; value</span>
+<span class="sd">    in the application configuration. If no value was set for &quot;idFieldName&quot;</span>
+<span class="sd">    in the application configuration, the value for the &quot;id&quot; element is</span>
+<span class="sd">    None.</span>
+
+<span class="sd">    :return: A dictionary (or list of dictionaries) with parameters for an</span>
+<span class="sd">        Elasticsearch &quot;index&quot; operation to perform. If None is returned, no</span>
+<span class="sd">        &quot;index&quot; operations will be performed.</span>
+<span class="sd">    :rtype: dict or list(dict)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Event payload received for transform: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">event</span><span class="o">.</span><span class="n">payload</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Index operation received for transform: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index_operation</span><span class="p">)</span>
+
+    <span class="c1"># Modify the &quot;id&quot; and &quot;body&quot; elements in the index operation dictionary.</span>
+    <span class="n">event_payload</span> <span class="o">=</span> <span class="n">MessageUtils</span><span class="o">.</span><span class="n">decode_payload</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
+    <span class="n">index_operation</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;advanced-event-example-id-1&quot;</span>
+    <span class="c1"># Store the event payload string in a dictionary. This allows Elasticsearch</span>
+    <span class="c1"># to serialize the document into JSON for storage.</span>
+    <span class="n">index_operation</span><span class="p">[</span><span class="s2">&quot;body&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">MessageUtils</span><span class="o">.</span><span class="n">dict_to_json</span><span class="p">({</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">index_operation</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">event_payload</span><span class="p">,</span>
+        <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;Advanced Transform Example&quot;</span><span class="p">})</span>
+
+    <span class="c1"># Create a second index operation dictionary, using some of the values</span>
+    <span class="c1"># from the first dictionary.</span>
+    <span class="n">another_index_operation</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">index_operation</span><span class="p">[</span><span class="s2">&quot;index&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;doc_type&quot;</span><span class="p">:</span> <span class="n">index_operation</span><span class="p">[</span><span class="s2">&quot;doc_type&quot;</span><span class="p">],</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;advanced-event-example-id-2&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="n">MessageUtils</span><span class="o">.</span><span class="n">dict_to_json</span><span class="p">({</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="s2">&quot;advanced-event-example-id-2&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="n">event_payload</span><span class="p">,</span>
+            <span class="s2">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;Advanced Transform Example&quot;</span><span class="p">})</span>
+    <span class="p">}</span>
+
+    <span class="c1"># Return info for two documents to store in Elasticsearch.</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">index_operation</span><span class="p">,</span> <span class="n">another_index_operation</span><span class="p">]</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The first parameter to the <code class="docutils literal"><span class="pre">on_event</span></code> function (<code class="docutils literal"><span class="pre">event</span></code>) contains the
+<code class="docutils literal"><span class="pre">dxlclient.message.Event</span></code> object which was received for the event
+notification. The second parameter to the function (<code class="docutils literal"><span class="pre">index_operation</span></code>)
+contains a <code class="docutils literal"><span class="pre">dict</span></code> with elements which map to parameters in the <a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.index">Elasticsearch
+Python Index API</a>.
+The elements in the <code class="docutils literal"><span class="pre">dict</span></code> are preconfigured with information from the event
+received from the DXL fabric:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="s2">&quot;opendxl-elasticsearch-service-examples&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;doc_type&quot;</span><span class="p">:</span> <span class="s2">&quot;advanced-transform-example-doc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
+    <span class="s2">&quot;body&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello from OpenDXL&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>The <code class="docutils literal"><span class="pre">on_event</span></code> function fills out and returns parameters for two different
+documents to be stored to Elasticsearch:</p>
+<ol class="arabic simple">
+<li>For the first index operation <code class="docutils literal"><span class="pre">dict</span></code>, the function modifies the
+<code class="docutils literal"><span class="pre">index_operation</span></code> input parameter with a value for the document <code class="docutils literal"><span class="pre">id</span></code> and
+<code class="docutils literal"><span class="pre">body</span></code>.</li>
+<li>For the second index operation <code class="docutils literal"><span class="pre">dict</span></code>, the function copies over some of
+the values from the <code class="docutils literal"><span class="pre">index_operation</span></code> input parameter.</li>
+</ol>
+<p>The DXL Elasticsearch service uses the Elasticsearch <code class="docutils literal"><span class="pre">Index</span></code> API to store the
+index operation dictionaries to Elasticsearch. For more information on the
+parameters which can be set for an index operation, see the
+<a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.index">Elasticsearch Python Index API</a>
+documentation.</p>
+<p>To confirm that that the two documents were stored properly, the sample creates
+a request message with a topic that targets the “get” method of the
+Elasticsearch API DXL service.</p>
+<p>The next step is to set the <code class="docutils literal"><span class="pre">payload</span></code> of the request message. The contents of
+the payload include the <code class="docutils literal"><span class="pre">index</span></code>, type (<code class="docutils literal"><span class="pre">doc_type</span></code>), and <code class="docutils literal"><span class="pre">id</span></code> of the
+document to retrieve.</p>
+<p>From the
+<a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.get">Elasticsearch Python Get API</a>
+documentation:</p>
+<blockquote>
+<div><cite>“Get a typed JSON document from the index based on its id.”</cite></div></blockquote>
+<p>The next step is to perform a synchronous request via the DXL fabric. Since the
+process of storing the documents to Elasticsearch is asynchronous to sending
+the event, the “get” requests are repeated up to 5 times, with a delay of 2
+seconds between requests, to allow some time for the documents to be stored
+before they can be retrieved. If the result after retries in getting each
+stored document is not an error, the response from the successful “get” request
+is displayed. The request process is performed twice, once for each document
+defined by the transform script which is expected to be stored to
+Elasticsearch.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Advanced Transform Example</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#running">Running</a></li>
+<li><a class="reference internal" href="#details">Details</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="basiceventexample.html"
+                        title="previous chapter">Basic Event Example</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="dxlelasticsearchservice.html"
+                        title="next chapter">dxlelasticsearchservice package</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/advancedtransformexample.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="dxlelasticsearchservice.html" title="dxlelasticsearchservice package"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="basiceventexample.html" title="Basic Event Example"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, McAfee LLC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>

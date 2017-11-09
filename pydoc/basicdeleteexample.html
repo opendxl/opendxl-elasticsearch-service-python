@@ -1,0 +1,266 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Basic Delete Example &#8212; Elasticsearch DXL Python Service 0.1.0 documentation</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0.1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Basic Event Example" href="basiceventexample.html" />
+    <link rel="prev" title="Basic Update Example" href="basicupdateexample.html" /> 
+  </head>
+  <body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="basiceventexample.html" title="Basic Event Example"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="basicupdateexample.html" title="Basic Update Example"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="basic-delete-example">
+<h1>Basic Delete Example<a class="headerlink" href="#basic-delete-example" title="Permalink to this headline">¶</a></h1>
+<p>This sample deletes a document from an Elasticsearch server via the
+Elasticsearch <code class="docutils literal"><span class="pre">Delete</span></code> API and displays the results of the delete request.</p>
+<p>For more information on the Elasticsearch <code class="docutils literal"><span class="pre">Delete</span></code> API, see the
+<a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.delete">Elasticsearch Python Delete API</a>
+and <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html">Elasticsearch REST Delete API</a>
+documentation.</p>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>The samples configuration step has been completed (see <a class="reference internal" href="sampleconfig.html"><span class="doc">Samples Configuration</span></a>).</li>
+<li>The Elasticsearch API DXL service is running, using the <code class="docutils literal"><span class="pre">sample</span></code>
+configuration (see <a class="reference internal" href="running.html"><span class="doc">Running</span></a>).</li>
+<li>Run through the steps in the <a class="reference internal" href="basicindexexample.html"><span class="doc">Basic Index Example</span></a>
+to store a document to Elasticsearch. This example will delete the stored
+document.</li>
+</ul>
+</div>
+<div class="section" id="running">
+<h2>Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h2>
+<p>To run this sample execute the <code class="docutils literal"><span class="pre">sample/basic/basic_delete_example.py</span></code> script
+as follows:</p>
+<blockquote>
+<div><div class="highlight-shell"><div class="highlight"><pre><span></span>python sample/basic/basic_delete_example.py
+</pre></div>
+</div>
+</div></blockquote>
+<p>If the document was previously stored via running the <a class="reference internal" href="basicindexexample.html"><span class="doc">Basic Index Example</span></a>,
+the output should appear similar to the following:</p>
+<blockquote>
+<div><div class="highlight-shell"><div class="highlight"><pre><span></span>Response to the delete request:
+<span class="o">{</span>
+    <span class="s2">&quot;_id&quot;</span>: <span class="s2">&quot;12345&quot;</span>,
+    <span class="s2">&quot;_index&quot;</span>: <span class="s2">&quot;opendxl-elasticsearch-service-examples&quot;</span>,
+    <span class="s2">&quot;_shards&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;failed&quot;</span>: <span class="m">0</span>,
+        <span class="s2">&quot;successful&quot;</span>: <span class="m">2</span>,
+        <span class="s2">&quot;total&quot;</span>: <span class="m">2</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;_type&quot;</span>: <span class="s2">&quot;basic-example-doc&quot;</span>,
+    <span class="s2">&quot;_version&quot;</span>: <span class="m">2</span>,
+    <span class="s2">&quot;found&quot;</span>: true,
+    <span class="s2">&quot;result&quot;</span>: <span class="s2">&quot;deleted&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>If the document to be deleted does not exist at the time the sample is run,
+the output should appear similar to the following:</p>
+<blockquote>
+<div><div class="highlight-shell"><div class="highlight"><pre><span></span>Error invoking service with topic <span class="s1">&#39;/opendxl-elasticsearch/service/elasticsearch-api/delete&#39;</span>: TransportError<span class="o">(</span><span class="m">404</span>, u<span class="s1">&#39;{&quot;found&quot;:false,&quot;_index&quot;:&quot;opendxl-elasticsearch-service-examples&quot;,&quot;_type&quot;:&quot;basic-example-doc&quot;,&quot;_id&quot;:&quot;12345&quot;,&quot;_version&quot;:3,&quot;result&quot;:&quot;not_found&quot;,&quot;_shards&quot;:{&quot;total&quot;:2,&quot;successful&quot;:2,&quot;failed&quot;:0}}&#39;</span><span class="o">)</span> <span class="o">(</span><span class="m">0</span><span class="o">)</span>
+Error payload:
+<span class="o">{</span>
+    <span class="s2">&quot;class&quot;</span>: <span class="s2">&quot;NotFoundError&quot;</span>,
+    <span class="s2">&quot;data&quot;</span>: <span class="o">{</span>
+        <span class="s2">&quot;error&quot;</span>: <span class="s2">&quot;{\&quot;found\&quot;:false,\&quot;_index\&quot;:\&quot;opendxl-elasticsearch-service-examples\&quot;,\&quot;_type\&quot;:\&quot;basic-example-doc\&quot;,\&quot;_id\&quot;:\&quot;123</span>
+<span class="s2">45\&quot;,\&quot;_version\&quot;:3,\&quot;result\&quot;:\&quot;not_found\&quot;,\&quot;_shards\&quot;:{\&quot;total\&quot;:2,\&quot;successful\&quot;:2,\&quot;failed\&quot;:0}}&quot;</span>,
+        <span class="s2">&quot;info&quot;</span>: <span class="o">{</span>
+            <span class="s2">&quot;_id&quot;</span>: <span class="s2">&quot;12345&quot;</span>,
+            <span class="s2">&quot;_index&quot;</span>: <span class="s2">&quot;opendxl-elasticsearch-service-examples&quot;</span>,
+            <span class="s2">&quot;_shards&quot;</span>: <span class="o">{</span>
+                <span class="s2">&quot;failed&quot;</span>: <span class="m">0</span>,
+                <span class="s2">&quot;successful&quot;</span>: <span class="m">2</span>,
+                <span class="s2">&quot;total&quot;</span>: <span class="m">2</span>
+            <span class="o">}</span>,
+            <span class="s2">&quot;_type&quot;</span>: <span class="s2">&quot;basic-example-doc&quot;</span>,
+            <span class="s2">&quot;_version&quot;</span>: <span class="m">3</span>,
+            <span class="s2">&quot;found&quot;</span>: false,
+            <span class="s2">&quot;result&quot;</span>: <span class="s2">&quot;not_found&quot;</span>
+        <span class="o">}</span>,
+        <span class="s2">&quot;status_code&quot;</span>: <span class="m">404</span>
+    <span class="o">}</span>,
+    <span class="s2">&quot;module&quot;</span>: <span class="s2">&quot;elasticsearch.exceptions&quot;</span>
+<span class="o">}</span>
+</pre></div>
+</div>
+</div></blockquote>
+</div>
+<div class="section" id="details">
+<h2>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
+<p>In order to enable the use of the <code class="docutils literal"><span class="pre">delete</span></code> API, the API name is listed in the
+<code class="docutils literal"><span class="pre">apiNames</span></code> setting under the <code class="docutils literal"><span class="pre">[General]</span></code> section in the <code class="docutils literal"><span class="pre">sample</span></code>
+“dxlelasticsearchservice.config” file that the service uses:</p>
+<blockquote>
+<div><div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[General]</span>
+<span class="na">apiNames</span><span class="o">=</span><span class="s">...,delete</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>For more information on the configuration, see the
+<a class="reference internal" href="configuration.html#dxl-service-config-file-label"><span class="std std-ref">Service Configuration File</span></a> section.</p>
+<p>The majority of the sample code is shown below:</p>
+<blockquote>
+<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create the client</span>
+<span class="k">with</span> <span class="n">DxlClient</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
+
+    <span class="c1"># Connect to the fabric</span>
+    <span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">()</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Connected to DXL fabric.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create the delete request</span>
+    <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;{}/delete&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ELASTICSEARCH_API_TOPIC</span><span class="p">)</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">request_topic</span><span class="p">)</span>
+
+    <span class="c1"># Set the payload for the delete request</span>
+    <span class="n">MessageUtils</span><span class="o">.</span><span class="n">dict_to_json_payload</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="p">{</span>
+        <span class="s2">&quot;index&quot;</span><span class="p">:</span> <span class="n">DOCUMENT_INDEX</span><span class="p">,</span>
+        <span class="s2">&quot;doc_type&quot;</span><span class="p">:</span> <span class="n">DOCUMENT_TYPE</span><span class="p">,</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">DOCUMENT_ID</span><span class="p">})</span>
+
+    <span class="c1"># Send the delete request</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_request</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">message_type</span> <span class="o">!=</span> <span class="n">Message</span><span class="o">.</span><span class="n">MESSAGE_TYPE_ERROR</span><span class="p">:</span>
+        <span class="c1"># Display results for the delete request</span>
+        <span class="n">res_dict</span> <span class="o">=</span> <span class="n">MessageUtils</span><span class="o">.</span><span class="n">json_payload_to_dict</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Response to the delete request:</span><span class="se">\n</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">MessageUtils</span><span class="o">.</span><span class="n">dict_to_json</span><span class="p">(</span><span class="n">res_dict</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">)))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Error invoking service with topic &#39;{}&#39;: {} ({})&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">request_topic</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">error_message</span><span class="p">,</span> <span class="n">res</span><span class="o">.</span><span class="n">error_code</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">payload</span><span class="p">:</span>
+            <span class="c1"># Display the payload in the error response</span>
+            <span class="n">res_dict</span> <span class="o">=</span> <span class="n">MessageUtils</span><span class="o">.</span><span class="n">json_payload_to_dict</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Error payload:</span><span class="se">\n</span><span class="s2">{}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">MessageUtils</span><span class="o">.</span><span class="n">dict_to_json</span><span class="p">(</span><span class="n">res_dict</span><span class="p">,</span> <span class="n">pretty_print</span><span class="o">=</span><span class="bp">True</span><span class="p">)))</span>
+</pre></div>
+</div>
+</div></blockquote>
+<p>After connecting to the DXL fabric, a request message is created with a topic
+that targets the “delete” method of the Elasticsearch API DXL service.</p>
+<p>The next step is to set the <code class="docutils literal"><span class="pre">payload</span></code> of the request message. The contents of
+the payload include the <code class="docutils literal"><span class="pre">index</span></code>, type (<code class="docutils literal"><span class="pre">doc_type</span></code>), and <code class="docutils literal"><span class="pre">id</span></code> of the
+document to delete.</p>
+<p>From the
+<a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.delete">Elasticsearch Python Delete API</a>
+documentation:</p>
+<blockquote>
+<div><cite>“Delete a typed JSON document from a specific index based on its id.”</cite></div></blockquote>
+<p>The next step is to perform a synchronous request via the DXL fabric. If the
+response message is not an error, its contents are displayed.</p>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Basic Delete Example</a><ul>
+<li><a class="reference internal" href="#prerequisites">Prerequisites</a></li>
+<li><a class="reference internal" href="#running">Running</a></li>
+<li><a class="reference internal" href="#details">Details</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="basicupdateexample.html"
+                        title="previous chapter">Basic Update Example</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="basiceventexample.html"
+                        title="next chapter">Basic Event Example</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/basicdeleteexample.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="basiceventexample.html" title="Basic Event Example"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="basicupdateexample.html" title="Basic Update Example"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.1.0 documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2017, McAfee LLC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+    </div>
+  </body>
+</html>
