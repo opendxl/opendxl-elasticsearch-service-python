@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 DOCUMENT_INDEX = "opendxl-elasticsearch-service-examples"
 DOCUMENT_TYPE = "basic-example-doc"
 DOCUMENT_ID = "12345"
-ELASTICSEARCH_API_TOPIC = "/opendxl-elasticsearch/service/elasticsearch-api"
 
 # Create DXL configuration from file
 config = DxlClientConfig.create_dxl_config_from_file(CONFIG_FILE)
@@ -31,7 +30,7 @@ with DxlClient(config) as client:
     logger.info("Connected to DXL fabric.")
 
     # Create the update request
-    request_topic = "{}/update".format(ELASTICSEARCH_API_TOPIC)
+    request_topic = "/opendxl-elasticsearch/service/elasticsearch-api/update"
     update_request = Request(request_topic)
 
     # Set the payload for the update request
@@ -65,7 +64,7 @@ with DxlClient(config) as client:
         exit(1)
 
     # Create the get request
-    request_topic = "{}/get".format(ELASTICSEARCH_API_TOPIC)
+    request_topic = "/opendxl-elasticsearch/service/elasticsearch-api/get"
     get_request = Request(request_topic)
 
     # Set the payload for the get request

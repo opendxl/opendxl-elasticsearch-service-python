@@ -19,7 +19,6 @@ DOCUMENT_INDEX = "opendxl-elasticsearch-service-examples"
 DOCUMENT_TYPE = "basic-event-example-doc"
 DOCUMENT_ID = "basic-event-example-id"
 EVENT_TOPIC = "/sample/elasticsearch/basicevent"
-ELASTICSEARCH_API_TOPIC = "/opendxl-elasticsearch/service/elasticsearch-api"
 
 # Create DXL configuration from file
 config = DxlClientConfig.create_dxl_config_from_file(CONFIG_FILE)
@@ -45,7 +44,7 @@ with DxlClient(config) as client:
     client.send_event(event)
 
     # Create the get request
-    request_topic = "{}/get".format(ELASTICSEARCH_API_TOPIC)
+    request_topic = "/opendxl-elasticsearch/service/elasticsearch-api/get"
     req = Request(request_topic)
 
     # Set the payload for the get request

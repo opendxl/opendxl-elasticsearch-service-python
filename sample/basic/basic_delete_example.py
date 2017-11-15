@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 DOCUMENT_INDEX = "opendxl-elasticsearch-service-examples"
 DOCUMENT_TYPE = "basic-example-doc"
 DOCUMENT_ID = "12345"
-ELASTICSEARCH_API_TOPIC = "/opendxl-elasticsearch/service/elasticsearch-api"
 
 # Create DXL configuration from file
 config = DxlClientConfig.create_dxl_config_from_file(CONFIG_FILE)
@@ -31,7 +30,7 @@ with DxlClient(config) as client:
     logger.info("Connected to DXL fabric.")
 
     # Create the delete request
-    request_topic = "{}/delete".format(ELASTICSEARCH_API_TOPIC)
+    request_topic = "/opendxl-elasticsearch/service/elasticsearch-api/delete"
     req = Request(request_topic)
 
     # Set the payload for the delete request
