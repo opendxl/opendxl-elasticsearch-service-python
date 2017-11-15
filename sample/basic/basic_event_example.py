@@ -55,15 +55,11 @@ with DxlClient(config) as client:
         "id": DOCUMENT_ID})
 
     print("Waiting for event payload to be stored in Elasticsearch...")
+    time.sleep(5)
 
-    tries_remaining = 5
-    # Send up to 5 requests to the elasticsearch DXL service to try to
-    # retrieve the document that should be stored for the event.
+    # Send a request to the elasticsearch DXL service to retrieve the document
+    # that should be stored for the event.
     res = client.sync_request(req, timeout=30)
-    while res.message_type == Message.MESSAGE_TYPE_ERROR and tries_remaining:
-        tries_remaining -= 1
-        time.sleep(2)
-        res = client.sync_request(req, timeout=30)
 
     if res.message_type != Message.MESSAGE_TYPE_ERROR:
         # Display results for the get request

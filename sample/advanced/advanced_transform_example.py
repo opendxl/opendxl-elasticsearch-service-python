@@ -17,7 +17,8 @@ logger = logging.getLogger(__name__)
 
 DOCUMENT_INDEX = "opendxl-elasticsearch-service-examples"
 DOCUMENT_TYPE = "advanced-transform-example-doc"
-DOCUMENT_IDS = ["advanced-event-example-id-1", "advanced-event-example-id-2"]
+FIRST_DOCUMENT_ID = "advanced-event-example-id-1"
+SECOND_DOCUMENT_ID = "advanced-event-example-id-2"
 EVENT_TOPIC = "/sample/elasticsearch/advancedtransform"
 ELASTICSEARCH_API_TOPIC = "/opendxl-elasticsearch/service/elasticsearch-api"
 
@@ -42,39 +43,58 @@ with DxlClient(config) as client:
     client.send_event(event)
 
     print("Waiting for event payloads to be stored in Elasticsearch...")
+    time.sleep(5)
 
-    for document_id in DOCUMENT_IDS:
-        # Create the get request
-        request_topic = "{}/get".format(ELASTICSEARCH_API_TOPIC)
-        req = Request(request_topic)
+    # Create a get request
+    request_topic = "{}/get".format(ELASTICSEARCH_API_TOPIC)
+    req = Request(request_topic)
 
-        # Set the payload for the get request
-        MessageUtils.dict_to_json_payload(req, {
-            "index": DOCUMENT_INDEX,
-            "doc_type": DOCUMENT_TYPE,
-            "id": document_id})
+    # Set the payload for the get request for the first document
+    MessageUtils.dict_to_json_payload(req, {
+        "index": DOCUMENT_INDEX,
+        "doc_type": DOCUMENT_TYPE,
+        "id": FIRST_DOCUMENT_ID})
 
-        tries_remaining = 5
-        # Send up to 5 requests to the elasticsearch DXL service to try to
-        # retrieve the document that should be stored for the event.
-        res = client.sync_request(req, timeout=30)
-        while res.message_type == Message.MESSAGE_TYPE_ERROR \
-                and tries_remaining:
-            tries_remaining -= 1
-            time.sleep(2)
-            res = client.sync_request(req, timeout=30)
+    # Send a request to the elasticsearch DXL service to retrieve the first
+    # document that should be stored for the event.
+    res = client.sync_request(req, timeout=30)
 
-        if res.message_type != Message.MESSAGE_TYPE_ERROR:
-            # Display results for the get request
+    if res.message_type != Message.MESSAGE_TYPE_ERROR:
+        # Display results for the get request for the first document
+        res_dict = MessageUtils.json_payload_to_dict(res)
+        print("Response to the get request for id '{}':\n{}".format(
+            FIRST_DOCUMENT_ID,
+            MessageUtils.dict_to_json(res_dict, pretty_print=True)))
+    else:
+        print("Error invoking service with topic '{}' for id '{}': {} ({})".format(
+            request_topic, FIRST_DOCUMENT_ID, res.error_message, res.error_code))
+        if res.payload:
+            # Display the payload in the error response
             res_dict = MessageUtils.json_payload_to_dict(res)
-            print("Response to the get request for id '{}':\n{}".format(
-                document_id,
+            print("Error payload:\n{}".format(
                 MessageUtils.dict_to_json(res_dict, pretty_print=True)))
-        else:
-            print("Error invoking service with topic '{}' for id '{}': {} ({})".format(
-                request_topic, document_id, res.error_message, res.error_code))
-            if res.payload:
-                # Display the payload in the error response
-                res_dict = MessageUtils.json_payload_to_dict(res)
-                print("Error payload:\n{}".format(
-                    MessageUtils.dict_to_json(res_dict, pretty_print=True)))
+
+    # Set the payload for the get request for the second document
+    MessageUtils.dict_to_json_payload(req, {
+        "index": DOCUMENT_INDEX,
+        "doc_type": DOCUMENT_TYPE,
+        "id": SECOND_DOCUMENT_ID})
+
+    # Send a request to the elasticsearch DXL service to retrieve the second
+    # document that should be stored for the event.
+    res = client.sync_request(req, timeout=30)
+
+    if res.message_type != Message.MESSAGE_TYPE_ERROR:
+        # Display results for the get request for the second document
+        res_dict = MessageUtils.json_payload_to_dict(res)
+        print("Response to the get request for id '{}':\n{}".format(
+            SECOND_DOCUMENT_ID,
+            MessageUtils.dict_to_json(res_dict, pretty_print=True)))
+    else:
+        print("Error invoking service with topic '{}' for id '{}': {} ({})".format(
+            request_topic, SECOND_DOCUMENT_ID, res.error_message, res.error_code))
+        if res.payload:
+            # Display the payload in the error response
+            res_dict = MessageUtils.json_payload_to_dict(res)
+            print("Error payload:\n{}".format(
+                MessageUtils.dict_to_json(res_dict, pretty_print=True)))
