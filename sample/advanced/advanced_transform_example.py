@@ -19,7 +19,6 @@ DOCUMENT_INDEX = "opendxl-elasticsearch-service-examples"
 DOCUMENT_TYPE = "advanced-transform-example-doc"
 DOCUMENT_IDS = ["advanced-event-example-id-1", "advanced-event-example-id-2"]
 EVENT_TOPIC = "/sample/elasticsearch/advancedtransform"
-ELASTICSEARCH_API_TOPIC = "/opendxl-elasticsearch/service/elasticsearch-api"
 
 # Create DXL configuration from file
 config = DxlClientConfig.create_dxl_config_from_file(CONFIG_FILE)
@@ -42,10 +41,11 @@ with DxlClient(config) as client:
     client.send_event(event)
 
     print("Waiting for event payloads to be stored in Elasticsearch...")
+    time.sleep(5)
 
     for document_id in DOCUMENT_IDS:
         # Create the get request
-        request_topic = "{}/get".format(ELASTICSEARCH_API_TOPIC)
+        request_topic = "/opendxl-elasticsearch/service/elasticsearch-api/get"
         req = Request(request_topic)
 
         # Set the payload for the get request
@@ -54,15 +54,9 @@ with DxlClient(config) as client:
             "doc_type": DOCUMENT_TYPE,
             "id": document_id})
 
-        tries_remaining = 5
-        # Send up to 5 requests to the elasticsearch DXL service to try to
-        # retrieve the document that should be stored for the event.
+       # Send a request to the elasticsearch DXL service to try to retrieve the
+       # document that should be stored for the event.
         res = client.sync_request(req, timeout=30)
-        while res.message_type == Message.MESSAGE_TYPE_ERROR \
-                and tries_remaining:
-            tries_remaining -= 1
-            time.sleep(2)
-            res = client.sync_request(req, timeout=30)
 
         if res.message_type != Message.MESSAGE_TYPE_ERROR:
             # Display results for the get request
