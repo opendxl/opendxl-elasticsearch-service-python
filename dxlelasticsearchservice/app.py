@@ -144,7 +144,7 @@ class ElasticsearchService(Application):
         "dxlelasticsearchservice.config" file).
 
         :return: The application configuration
-        :rtype: ConfigParser
+        :rtype: configparser.ConfigParser
         """
         return self._config
 
@@ -196,8 +196,8 @@ class ElasticsearchService(Application):
             set to 'True' but no file can be found which matches the value
             read for the setting.
         """
-        config = self._config
-        if self.config.has_option(section, setting):
+        config = self.config
+        if config.has_option(section, setting):
             getter_methods = {str: config.get,
                               list: config.get,
                               bool: config.getboolean,
@@ -359,7 +359,7 @@ class ElasticsearchService(Application):
         This callback provides the opportunity for the application to parse
         additional configuration properties.
 
-        :param ConfigParser config: The application configuration
+        :param configparser.ConfigParser config: The application configuration
         """
         logger.info("On 'load configuration' callback.")
 
