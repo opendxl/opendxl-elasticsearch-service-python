@@ -427,7 +427,7 @@ class ElasticsearchService(Application):
                             topic, event_group_name)
                 self.add_event_callback(topic,
                                         callback,
-                                        separate_thread=False)
+                                        separate_thread=True)
 
     def _get_api_method(self, api_name):
         """
