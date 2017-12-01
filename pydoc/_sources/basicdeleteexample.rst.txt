@@ -107,7 +107,7 @@ The majority of the sample code is shown below:
             logger.info("Connected to DXL fabric.")
 
             # Create the delete request
-            request_topic = "{}/delete".format(ELASTICSEARCH_API_TOPIC)
+            request_topic = "/opendxl-elasticsearch/service/elasticsearch-api/delete"
             req = Request(request_topic)
 
             # Set the payload for the delete request

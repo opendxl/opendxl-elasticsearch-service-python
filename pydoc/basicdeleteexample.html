@@ -154,7 +154,7 @@ Error payload:
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Connected to DXL fabric.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Create the delete request</span>
-    <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;{}/delete&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ELASTICSEARCH_API_TOPIC</span><span class="p">)</span>
+    <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;/opendxl-elasticsearch/service/elasticsearch-api/delete&quot;</span>
     <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">request_topic</span><span class="p">)</span>
 
     <span class="c1"># Set the payload for the delete request</span>

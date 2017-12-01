@@ -172,7 +172,7 @@ are listed in the <code class="docutils literal"><span class="pre">apiNames</spa
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Connected to DXL fabric.&quot;</span><span class="p">)</span>
 
     <span class="c1"># Create the update request</span>
-    <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;{}/update&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ELASTICSEARCH_API_TOPIC</span><span class="p">)</span>
+    <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;/opendxl-elasticsearch/service/elasticsearch-api/update&quot;</span>
     <span class="n">update_request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">request_topic</span><span class="p">)</span>
 
     <span class="c1"># Set the payload for the update request</span>
@@ -206,7 +206,7 @@ are listed in the <code class="docutils literal"><span class="pre">apiNames</spa
         <span class="nb">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
     <span class="c1"># Create the get request</span>
-    <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;{}/get&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ELASTICSEARCH_API_TOPIC</span><span class="p">)</span>
+    <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;/opendxl-elasticsearch/service/elasticsearch-api/get&quot;</span>
     <span class="n">get_request</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">request_topic</span><span class="p">)</span>
 
     <span class="c1"># Set the payload for the get request</span>

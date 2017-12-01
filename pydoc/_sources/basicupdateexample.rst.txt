@@ -125,7 +125,7 @@ The majority of the sample code is shown below:
             logger.info("Connected to DXL fabric.")
 
             # Create the update request
-            request_topic = "{}/update".format(ELASTICSEARCH_API_TOPIC)
+            request_topic = "/opendxl-elasticsearch/service/elasticsearch-api/update"
             update_request = Request(request_topic)
 
             # Set the payload for the update request
@@ -159,7 +159,7 @@ The majority of the sample code is shown below:
                 exit(1)
 
             # Create the get request
-            request_topic = "{}/get".format(ELASTICSEARCH_API_TOPIC)
+            request_topic = "/opendxl-elasticsearch/service/elasticsearch-api/get"
             get_request = Request(request_topic)
 
             # Set the payload for the get request

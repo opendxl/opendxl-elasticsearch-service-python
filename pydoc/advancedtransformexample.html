@@ -172,10 +172,11 @@ more information on the transform script.</p>
     <span class="n">client</span><span class="o">.</span><span class="n">send_event</span><span class="p">(</span><span class="n">event</span><span class="p">)</span>
 
     <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Waiting for event payloads to be stored in Elasticsearch...&quot;</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
 
     <span class="k">for</span> <span class="n">document_id</span> <span class="ow">in</span> <span class="n">DOCUMENT_IDS</span><span class="p">:</span>
         <span class="c1"># Create the get request</span>
-        <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;{}/get&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ELASTICSEARCH_API_TOPIC</span><span class="p">)</span>
+        <span class="n">request_topic</span> <span class="o">=</span> <span class="s2">&quot;/opendxl-elasticsearch/service/elasticsearch-api/get&quot;</span>
         <span class="n">req</span> <span class="o">=</span> <span class="n">Request</span><span class="p">(</span><span class="n">request_topic</span><span class="p">)</span>
 
         <span class="c1"># Set the payload for the get request</span>
@@ -184,15 +185,9 @@ more information on the transform script.</p>
             <span class="s2">&quot;doc_type&quot;</span><span class="p">:</span> <span class="n">DOCUMENT_TYPE</span><span class="p">,</span>
             <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">document_id</span><span class="p">})</span>
 
-        <span class="n">tries_remaining</span> <span class="o">=</span> <span class="mi">5</span>
-        <span class="c1"># Send up to 5 requests to the elasticsearch DXL service to try to</span>
-        <span class="c1"># retrieve the document that should be stored for the event.</span>
+       <span class="c1"># Send a request to the elasticsearch DXL service to try to retrieve the</span>
+       <span class="c1"># document that should be stored for the event.</span>
         <span class="n">res</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_request</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-        <span class="k">while</span> <span class="n">res</span><span class="o">.</span><span class="n">message_type</span> <span class="o">==</span> <span class="n">Message</span><span class="o">.</span><span class="n">MESSAGE_TYPE_ERROR</span> \
-                <span class="ow">and</span> <span class="n">tries_remaining</span><span class="p">:</span>
-            <span class="n">tries_remaining</span> <span class="o">-=</span> <span class="mi">1</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-            <span class="n">res</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">sync_request</span><span class="p">(</span><span class="n">req</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">message_type</span> <span class="o">!=</span> <span class="n">Message</span><span class="o">.</span><span class="n">MESSAGE_TYPE_ERROR</span><span class="p">:</span>
             <span class="c1"># Display results for the get request</span>
