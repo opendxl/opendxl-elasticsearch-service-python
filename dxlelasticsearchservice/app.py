@@ -9,7 +9,6 @@ from dxlclient import ServiceRegistrationInfo
 from dxlelasticsearchservice._requesthandlers import \
     ElasticsearchServiceEventCallback, \
     ElasticsearchServiceRequestCallback
-from six.moves import map
 
 # Configure local logger
 logger = logging.getLogger(__name__)
