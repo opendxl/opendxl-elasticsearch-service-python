@@ -51,18 +51,18 @@ with DxlClient(config) as client:
         # Display results for the update request
         update_response_dict = MessageUtils.json_payload_to_dict(
             update_response)
-        print(("Response to the update request:\n{}".format(
+        print("Response to the update request:\n{}".format(
             MessageUtils.dict_to_json(update_response_dict,
-                                      pretty_print=True))))
+                                      pretty_print=True)))
     else:
-        print(("Error invoking service with topic '{}': {} ({})".format(
+        print("Error invoking service with topic '{}': {} ({})".format(
             request_topic, update_response.error_message,
-            update_response.error_code)))
+            update_response.error_code))
         if update_response.payload:
             # Display the payload in the error response
             res_dict = MessageUtils.json_payload_to_dict(update_response)
-            print(("Error payload:\n{}".format(
-                MessageUtils.dict_to_json(res_dict, pretty_print=True))))
+            print("Error payload:\n{}".format(
+                MessageUtils.dict_to_json(res_dict, pretty_print=True)))
         exit(1)
 
     # Create the get request
@@ -81,9 +81,9 @@ with DxlClient(config) as client:
     if get_response.message_type != Message.MESSAGE_TYPE_ERROR:
         # Display results for the get request
         get_response_dict = MessageUtils.json_payload_to_dict(get_response)
-        print(("Response to the get request:\n{}".format(
-            MessageUtils.dict_to_json(get_response_dict, pretty_print=True))))
+        print("Response to the get request:\n{}".format(
+            MessageUtils.dict_to_json(get_response_dict, pretty_print=True)))
     else:
-        print(("Error invoking service with topic '{}': {} ({})".format(
+        print("Error invoking service with topic '{}': {} ({})".format(
             request_topic, get_response.error_message,
-            get_response.error_code)))
+            get_response.error_code))
