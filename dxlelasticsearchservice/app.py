@@ -206,10 +206,10 @@ class ElasticsearchService(Application):
                               float: config.getfloat}
             try:
                 return_value = getter_methods[return_type](section, setting)
-            except ValueError as e:
+            except ValueError as ex:
                 raise ValueError(
                     "Unexpected value for setting {} in section {}: {}".format(
-                        setting, section, e.message))
+                        setting, section, ex))
             if return_type == str:
                 return_value = return_value.strip()
                 if len(return_value) is 0 and raise_exception_if_missing:
