@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import os
 import sys
 import time
@@ -61,14 +63,14 @@ with DxlClient(config) as client:
         if res.message_type != Message.MESSAGE_TYPE_ERROR:
             # Display results for the get request
             res_dict = MessageUtils.json_payload_to_dict(res)
-            print("Response to the get request for id '{}':\n{}".format(
+            print(("Response to the get request for id '{}':\n{}".format(
                 document_id,
-                MessageUtils.dict_to_json(res_dict, pretty_print=True)))
+                MessageUtils.dict_to_json(res_dict, pretty_print=True))))
         else:
-            print("Error invoking service with topic '{}' for id '{}': {} ({})".format(
-                request_topic, document_id, res.error_message, res.error_code))
+            print(("Error invoking service with topic '{}' for id '{}': {} ({})".format(
+                request_topic, document_id, res.error_message, res.error_code)))
             if res.payload:
                 # Display the payload in the error response
                 res_dict = MessageUtils.json_payload_to_dict(res)
-                print("Error payload:\n{}".format(
-                    MessageUtils.dict_to_json(res_dict, pretty_print=True)))
+                print(("Error payload:\n{}".format(
+                    MessageUtils.dict_to_json(res_dict, pretty_print=True))))

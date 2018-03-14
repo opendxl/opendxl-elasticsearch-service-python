@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from __future__ import print_function
 import os
 import sys
 
@@ -48,12 +50,12 @@ with DxlClient(config) as client:
     if index_response.message_type != Message.MESSAGE_TYPE_ERROR:
         # Display results for the index request
         index_response_dict = MessageUtils.json_payload_to_dict(index_response)
-        print("Response to the index request:\n{}".format(
-            MessageUtils.dict_to_json(index_response_dict, pretty_print=True)))
+        print(("Response to the index request:\n{}".format(
+            MessageUtils.dict_to_json(index_response_dict, pretty_print=True))))
     else:
-        print("Error invoking service with topic '{}': {} ({})".format(
+        print(("Error invoking service with topic '{}': {} ({})".format(
             request_topic, index_response.error_message,
-            index_response.error_code))
+            index_response.error_code)))
         exit(1)
 
     # Create the get request
@@ -72,9 +74,9 @@ with DxlClient(config) as client:
     if get_response.message_type != Message.MESSAGE_TYPE_ERROR:
         # Display results for the get request
         get_response_dict = MessageUtils.json_payload_to_dict(get_response)
-        print("Response to the get request:\n{}".format(
-            MessageUtils.dict_to_json(get_response_dict, pretty_print=True)))
+        print(("Response to the get request:\n{}".format(
+            MessageUtils.dict_to_json(get_response_dict, pretty_print=True))))
     else:
-        print("Error invoking service with topic '{}': {} ({})".format(
+        print(("Error invoking service with topic '{}': {} ({})".format(
             request_topic, get_response.error_message,
-            get_response.error_code))
+            get_response.error_code)))
