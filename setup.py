@@ -56,7 +56,6 @@ class CiCommand(Command):
 TEST_REQUIREMENTS = ["pylint"]
 
 DEV_REQUIREMENTS = TEST_REQUIREMENTS + ["sphinx"]
-
 setup(
     # Package name:
     name="dxlelasticsearchservice",
@@ -66,8 +65,8 @@ setup(
 
     # Requirements
     install_requires=[
-        "dxlbootstrap>=0.1.3",
-        "dxlclient",
+        "dxlbootstrap>=0.2.0",
+        "dxlclient>=4.1.0.184",
         "elasticsearch>=5.0.0,<6.0.0"
     ],
 
