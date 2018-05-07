@@ -1,8 +1,8 @@
+from __future__ import absolute_import
 import logging
 import sys
 from threading import Lock
 
-from elasticsearch import Elasticsearch
 from elasticsearch.exceptions import ElasticsearchException,\
     ImproperlyConfigured, TransportError
 
@@ -14,7 +14,7 @@ from dxlclient.message import ErrorResponse, Response
 # dxlelasticsearchservice._transform module. Including this import to avoid a
 # warning that would otherwise appear when the transform scripts are loaded.
 
-import dxlelasticsearchservice._transform
+import dxlelasticsearchservice._transform # pylint: disable=unused-import
 
 # Python's imp module, used by the dxlelasticsearchservice for loading
 # transform scripts, was deprecated in Python 3.4 in favor of importlib
@@ -30,7 +30,7 @@ import dxlelasticsearchservice._transform
 _PYTHON_VERSION_SUPPORTS_MODULE_FROM_SPEC_LOADING = \
     sys.version_info.major >= 3 and sys.version_info.minor >= 5
 if _PYTHON_VERSION_SUPPORTS_MODULE_FROM_SPEC_LOADING:
-    import importlib.util
+    import importlib.util  # pylint: disable=import-error, no-name-in-module
 else:
     import imp
 
@@ -38,7 +38,7 @@ else:
 logger = logging.getLogger(__name__)
 
 
-class ElasticsearchServiceEventCallback(EventCallback):
+class ElasticsearchServiceEventCallback(EventCallback): # pylint: disable=too-many-instance-attributes
     """
     Event callback used to store event payloads to Elasticsearch
     """
@@ -166,6 +166,7 @@ class ElasticsearchServiceEventCallback(EventCallback):
             # for more details on why the different loading approaches are
             # used.
             if _PYTHON_VERSION_SUPPORTS_MODULE_FROM_SPEC_LOADING:
+                # pylint: disable=no-member, no-name-in-module
                 spec = importlib.util.spec_from_file_location(
                     full_module_name, self._transform_script)
                 transform_module = importlib.util.module_from_spec(spec)
@@ -173,19 +174,21 @@ class ElasticsearchServiceEventCallback(EventCallback):
             else:
                 transform_module = imp.load_source(full_module_name,
                                                    self._transform_script)
-        except Exception as e:
+        except Exception as ex:
             logger.error(
                 "Failed to load transform script (%s) from section %s: %s",
-                self._transform_script, self._event_group_name, str(e))
+                self._transform_script, self._event_group_name, ex)
             raise
 
         transform_function = transform_module.__dict__.get("on_event")
         if not transform_function:
             raise ValueError(
-                "%s in transform script (%s) from section %s",
-                "on_event function not found",
-                self._transform_script,
-                self._event_group_name)
+                "{} in transform script {} from section {}".format(
+                    "on_event function not found",
+                    self._transform_script,
+                    self._event_group_name
+                )
+            )
 
         return transform_function
 
@@ -310,6 +313,32 @@ class ElasticsearchServiceRequestCallback(RequestCallback):
             response_data = self._api_method(**request_dict)
             MessageUtils.dict_to_json_payload(res, response_data)
 
+        except TransportError as ex:
+            error_str = str(ex)
+            logger.exception("TransportError handling request: %s",
+                             error_str)
+            res = ErrorResponse(
+                request,
+                error_message=MessageUtils.encode(error_str))
+
+            error_dict = {
+                "module": ex.__module__,
+                "class": ex.__class__.__name__}
+
+            if isinstance(ex.info, dict):
+                error_info = ex.info
+            else:
+                # If the error info is not already a dict, make a dict with
+                # just the original class name of the error info object and
+                # an associated error message. This is done to ensure that the
+                # error response can be serialized into JSON for the DXL
+                error_info = {"class": ex.info.__class__.__name__,
+                              "error": ex.info.__str__()}
+            error_dict["data"] = {"status_code": ex.status_code,
+                                  "error": ex.error,
+                                  "info": error_info}
+            MessageUtils.dict_to_json_payload(res, error_dict)
+
         except (ImproperlyConfigured, ElasticsearchException) as ex:
             error_str = str(ex)
             logger.exception("Elasticsearch exception handling request: %s",
@@ -321,20 +350,6 @@ class ElasticsearchServiceRequestCallback(RequestCallback):
             error_dict = {
                 "module": ex.__module__,
                 "class": ex.__class__.__name__}
-            if isinstance(ex.info, dict):
-                error_info = ex.info
-            else:
-                # If the error info is not already a dict, make a dict with
-                # just the original class name of the error info object and
-                # an associated error message. This is done to ensure that the
-                # error response can be serialized into JSON for the DXL
-                # response payload.
-                error_info = {"class": ex.info.__class__.__name__,
-                              "error": ex.info.__str__()}
-            if isinstance(ex, TransportError):
-                error_dict["data"] = {"status_code": ex.status_code,
-                                      "error": ex.error,
-                                      "info": error_info}
 
             MessageUtils.dict_to_json_payload(res, error_dict)
 

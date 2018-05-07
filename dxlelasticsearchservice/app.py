@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import logging
 import os
 
@@ -205,10 +206,10 @@ class ElasticsearchService(Application):
                               float: config.getfloat}
             try:
                 return_value = getter_methods[return_type](section, setting)
-            except ValueError as e:
+            except ValueError as ex:
                 raise ValueError(
                     "Unexpected value for setting {} in section {}: {}".format(
-                        setting, section, e.message))
+                        setting, section, ex))
             if return_type == str:
                 return_value = return_value.strip()
                 if len(return_value) is 0 and raise_exception_if_missing:
@@ -368,7 +369,7 @@ class ElasticsearchService(Application):
             self._GENERAL_SERVER_NAMES_CONFIG_PROP,
             return_type=list,
             raise_exception_if_missing=True)
-        server_hosts = map(self._get_server_settings, server_names)
+        server_hosts = list(map(self._get_server_settings, server_names))
 
         event_group_names = self._get_setting_from_config(
             self._GENERAL_CONFIG_SECTION,
