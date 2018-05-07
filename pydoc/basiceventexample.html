@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Basic Event Example &#8212; Elasticsearch DXL Python Service 0.1.0 documentation</title>
+    <title>Basic Event Example &#8212; Elasticsearch DXL Python Service 0.2.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -25,8 +17,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Advanced Transform Example" href="advancedtransformexample.html" />
     <link rel="prev" title="Basic Delete Example" href="basicdeleteexample.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -42,7 +33,7 @@
         <li class="right" >
           <a href="basicdeleteexample.html" title="Basic Delete Example"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -56,9 +47,9 @@
 <p>This sample sends an event to a DXL broker. The DXL Elasticsearch service
 receives a notification for the event and stores the payload into a document
 on an Elasticsearch server. The sample then retrieves the contents of the stored document
-via a call to the Elasticsearch <code class="docutils literal"><span class="pre">Get</span></code> API. The sample displays the results of
-the <code class="docutils literal"><span class="pre">Get</span></code> call.</p>
-<p>For more information on the Elasticsearch <code class="docutils literal"><span class="pre">Get</span></code> API, see the
+via a call to the Elasticsearch <code class="docutils literal notranslate"><span class="pre">Get</span></code> API. The sample displays the results of
+the <code class="docutils literal notranslate"><span class="pre">Get</span></code> call.</p>
+<p>For more information on the Elasticsearch <code class="docutils literal notranslate"><span class="pre">Get</span></code> API, see the
 <a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.get">Elasticsearch Python Get API</a>
 and <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html">Elasticsearch REST Get API</a>
 documentation.</p>
@@ -66,22 +57,22 @@ documentation.</p>
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>The samples configuration step has been completed (see <a class="reference internal" href="sampleconfig.html"><span class="doc">Samples Configuration</span></a>).</li>
-<li>The Elasticsearch API DXL service is running, using the <code class="docutils literal"><span class="pre">sample</span></code>
+<li>The Elasticsearch API DXL service is running, using the <code class="docutils literal notranslate"><span class="pre">sample</span></code>
 configuration (see <a class="reference internal" href="running.html"><span class="doc">Running</span></a>).</li>
 </ul>
 </div>
 <div class="section" id="running">
 <h2>Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h2>
-<p>To run this sample execute the <code class="docutils literal"><span class="pre">sample/basic/basic_event_example.py</span></code> script
+<p>To run this sample execute the <code class="docutils literal notranslate"><span class="pre">sample/basic/basic_event_example.py</span></code> script
 as follows:</p>
 <blockquote>
-<div><div class="highlight-shell"><div class="highlight"><pre><span></span>python sample/basic/basic_event_example.py
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python sample/basic/basic_event_example.py
 </pre></div>
 </div>
 </div></blockquote>
 <p>The output should appear similar to the following:</p>
 <blockquote>
-<div><div class="highlight-shell"><div class="highlight"><pre><span></span>Waiting <span class="k">for</span> event payload to be stored in Elasticsearch...
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Waiting <span class="k">for</span> event payload to be stored in Elasticsearch...
 Response to the get request:
 <span class="o">{</span>
     <span class="s2">&quot;_id&quot;</span>: <span class="s2">&quot;basic-event-example-id&quot;</span>,
@@ -101,19 +92,19 @@ Response to the get request:
 </div>
 <div class="section" id="details">
 <h2>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
-<p>In order to enable the use of the <code class="docutils literal"><span class="pre">get</span></code> API, the API name is listed in the
-<code class="docutils literal"><span class="pre">apiNames</span></code> setting under the <code class="docutils literal"><span class="pre">[General]</span></code> section in the <code class="docutils literal"><span class="pre">sample</span></code>
-“dxlelasticsearchservice.config” file that the service uses:</p>
+<p>In order to enable the use of the <code class="docutils literal notranslate"><span class="pre">get</span></code> API, the API name is listed in the
+<code class="docutils literal notranslate"><span class="pre">apiNames</span></code> setting under the <code class="docutils literal notranslate"><span class="pre">[General]</span></code> section in the <code class="docutils literal notranslate"><span class="pre">sample</span></code>
+&quot;dxlelasticsearchservice.config&quot; file that the service uses:</p>
 <blockquote>
-<div><div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[General]</span>
+<div><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[General]</span>
 <span class="na">apiNames</span><span class="o">=</span><span class="s">...,get,...</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>The “dxlelasticsearchservice.config” file also includes some settings which
+<p>The &quot;dxlelasticsearchservice.config&quot; file also includes some settings which
 instruct the service to store the event payload into an Elasticsearch document:</p>
 <blockquote>
-<div><div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[General]</span>
+<div><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[General]</span>
 <span class="na">eventGroupNames</span><span class="o">=</span><span class="s">basic_event_example,...</span>
 
 <span class="k">[basic_event_example]</span>
@@ -124,16 +115,16 @@ instruct the service to store the event payload into an Elasticsearch document:<
 </pre></div>
 </div>
 </div></blockquote>
-<p>The <code class="docutils literal"><span class="pre">basic_event_example</span></code> event group section lists the name of the event
-topic which the sample sends, <code class="docutils literal"><span class="pre">/sample/elasticsearch/basicevent</span></code>. The payload
+<p>The <code class="docutils literal notranslate"><span class="pre">basic_event_example</span></code> event group section lists the name of the event
+topic which the sample sends, <code class="docutils literal notranslate"><span class="pre">/sample/elasticsearch/basicevent</span></code>. The payload
 for each matching event received is stored into Elasticsearch as a document
-with the index (<code class="docutils literal"><span class="pre">documentIndex</span></code>) and type (<code class="docutils literal"><span class="pre">documentType</span></code>) listed in the
+with the index (<code class="docutils literal notranslate"><span class="pre">documentIndex</span></code>) and type (<code class="docutils literal notranslate"><span class="pre">documentType</span></code>) listed in the
 configuration. The ID for the Elasticsearch document is retrieved from the
 field name in the event payload which corresponds to the value for the
-<code class="docutils literal"><span class="pre">idFieldName</span></code> setting, <code class="docutils literal"><span class="pre">event_id</span></code>. The sample includes the following
+<code class="docutils literal notranslate"><span class="pre">idFieldName</span></code> setting, <code class="docutils literal notranslate"><span class="pre">event_id</span></code>. The sample includes the following
 payload for the event:</p>
 <blockquote>
-<div><div class="highlight-json"><div class="highlight"><pre><span></span><span class="p">{</span>
+<div><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
     <span class="nt">&quot;event_id&quot;</span><span class="p">:</span> <span class="s2">&quot;basic-event-example-id&quot;</span><span class="p">,</span>
     <span class="nt">&quot;message&quot;</span><span class="p">:</span> <span class="s2">&quot;Hello from OpenDXL&quot;</span><span class="p">,</span>
     <span class="nt">&quot;source&quot;</span><span class="p">:</span> <span class="s2">&quot;Basic Event Example&quot;</span>
@@ -141,16 +132,16 @@ payload for the event:</p>
 </pre></div>
 </div>
 </div></blockquote>
-<p>Since the value in the payload for the <code class="docutils literal"><span class="pre">event_id</span></code> field is
-<code class="docutils literal"><span class="pre">basic-event-example-id</span></code>, the ID of the document stored to Elasticsearch for
-the event is also <code class="docutils literal"><span class="pre">basic-event-example-id</span></code>.</p>
+<p>Since the value in the payload for the <code class="docutils literal notranslate"><span class="pre">event_id</span></code> field is
+<code class="docutils literal notranslate"><span class="pre">basic-event-example-id</span></code>, the ID of the document stored to Elasticsearch for
+the event is also <code class="docutils literal notranslate"><span class="pre">basic-event-example-id</span></code>.</p>
 <p>For more information on the configuration, see the
 <a class="reference internal" href="configuration.html#dxl-service-config-file-label"><span class="std std-ref">Service Configuration File</span></a> section.</p>
 <p>For more information on the Elasticsearch document storage process, see the
 <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html">Elasticsearch REST Index API</a>.</p>
 <p>The majority of the sample code is shown below:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create the client</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the client</span>
 <span class="k">with</span> <span class="n">DxlClient</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
 
     <span class="c1"># Connect to the fabric</span>
@@ -207,22 +198,22 @@ the event is also <code class="docutils literal"><span class="pre">basic-event-e
 <p>Upon receipt of a notification for the event, the DXL Elasticsearch service
 stores a corresponding document to the Elasticsearch server.</p>
 <p>To confirm that the document was stored properly, a request message is created
-with a topic that targets the “get” method of the Elasticsearch API DXL
+with a topic that targets the &quot;get&quot; method of the Elasticsearch API DXL
 service.</p>
-<p>The next step is to set the <code class="docutils literal"><span class="pre">payload</span></code> of the request message. The contents of
-the payload include the <code class="docutils literal"><span class="pre">index</span></code>, type (<code class="docutils literal"><span class="pre">doc_type</span></code>), and <code class="docutils literal"><span class="pre">id</span></code> of the
+<p>The next step is to set the <code class="docutils literal notranslate"><span class="pre">payload</span></code> of the request message. The contents of
+the payload include the <code class="docutils literal notranslate"><span class="pre">index</span></code>, type (<code class="docutils literal notranslate"><span class="pre">doc_type</span></code>), and <code class="docutils literal notranslate"><span class="pre">id</span></code> of the
 document to retrieve.</p>
 <p>From the
 <a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.get">Elasticsearch Python Get API</a>
 documentation:</p>
 <blockquote>
-<div><cite>“Get a typed JSON document from the index based on its id.”</cite></div></blockquote>
+<div><cite>&quot;Get a typed JSON document from the index based on its id.&quot;</cite></div></blockquote>
 <p>The next step is to perform a synchronous request via the DXL fabric. Since the
 process of storing the document to Elasticsearch is asynchronous to sending
-the event, the “get” requests are repeated up to 5 times, with a delay of 2
+the event, the &quot;get&quot; requests are repeated up to 5 times, with a delay of 2
 seconds between requests, to allow some time for the document to be stored
 before it can be retrieved. If the result after retries in getting the stored
-document is not an error, the response from the successful “get” request is
+document is not an error, the response from the successful &quot;get&quot; request is
 displayed.</p>
 </div>
 </div>
@@ -258,12 +249,14 @@ displayed.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -285,12 +278,12 @@ displayed.</p>
         <li class="right" >
           <a href="basicdeleteexample.html" title="Basic Delete Example"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, McAfee LLC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+        &#169; Copyright 2018, McAfee LLC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>

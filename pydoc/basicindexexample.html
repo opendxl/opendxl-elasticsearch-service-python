@@ -4,20 +4,12 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Basic Index Example &#8212; Elasticsearch DXL Python Service 0.1.0 documentation</title>
+    <title>Basic Index Example &#8212; Elasticsearch DXL Python Service 0.2.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript">
-      var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    './',
-        VERSION:     '0.1.0',
-        COLLAPSE_INDEX: false,
-        FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true,
-        SOURCELINK_SUFFIX: '.txt'
-      };
-    </script>
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
@@ -25,8 +17,7 @@
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Basic Update Example" href="basicupdateexample.html" />
     <link rel="prev" title="Samples Configuration" href="sampleconfig.html" /> 
-  </head>
-  <body>
+  </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
       <ul>
@@ -42,7 +33,7 @@
         <li class="right" >
           <a href="sampleconfig.html" title="Samples Configuration"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -54,10 +45,10 @@
   <div class="section" id="basic-index-example">
 <h1>Basic Index Example<a class="headerlink" href="#basic-index-example" title="Permalink to this headline">¶</a></h1>
 <p>This sample stores a document to an Elasticsearch server via the Elasticsearch
-<code class="docutils literal"><span class="pre">Index</span></code> API. The sample then retrieves the contents of the stored document
-via a call to the Elasticsearch <code class="docutils literal"><span class="pre">Get</span></code> API. The sample displays the results of
-the <code class="docutils literal"><span class="pre">Index</span></code> and <code class="docutils literal"><span class="pre">Get</span></code> calls.</p>
-<p>For more information on the Elasticsearch <code class="docutils literal"><span class="pre">Index</span></code> API, see the
+<code class="docutils literal notranslate"><span class="pre">Index</span></code> API. The sample then retrieves the contents of the stored document
+via a call to the Elasticsearch <code class="docutils literal notranslate"><span class="pre">Get</span></code> API. The sample displays the results of
+the <code class="docutils literal notranslate"><span class="pre">Index</span></code> and <code class="docutils literal notranslate"><span class="pre">Get</span></code> calls.</p>
+<p>For more information on the Elasticsearch <code class="docutils literal notranslate"><span class="pre">Index</span></code> API, see the
 <a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.index">Elasticsearch Python Index API</a>
 and <a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html">Elasticsearch REST Index API</a>
 documentation.</p>
@@ -65,22 +56,22 @@ documentation.</p>
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>The samples configuration step has been completed (see <a class="reference internal" href="sampleconfig.html"><span class="doc">Samples Configuration</span></a>).</li>
-<li>The Elasticsearch API DXL service is running, using the <code class="docutils literal"><span class="pre">sample</span></code>
+<li>The Elasticsearch API DXL service is running, using the <code class="docutils literal notranslate"><span class="pre">sample</span></code>
 configuration (see <a class="reference internal" href="running.html"><span class="doc">Running</span></a>).</li>
 </ul>
 </div>
 <div class="section" id="running">
 <h2>Running<a class="headerlink" href="#running" title="Permalink to this headline">¶</a></h2>
-<p>To run this sample execute the <code class="docutils literal"><span class="pre">sample/basic/basic_index_example.py</span></code> script
+<p>To run this sample execute the <code class="docutils literal notranslate"><span class="pre">sample/basic/basic_index_example.py</span></code> script
 as follows:</p>
 <blockquote>
-<div><div class="highlight-shell"><div class="highlight"><pre><span></span>python sample/basic/basic_index_example.py
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>python sample/basic/basic_index_example.py
 </pre></div>
 </div>
 </div></blockquote>
 <p>The output should appear similar to the following:</p>
 <blockquote>
-<div><div class="highlight-shell"><div class="highlight"><pre><span></span>Response to the index request:
+<div><div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Response to the index request:
 <span class="o">{</span>
     <span class="s2">&quot;_id&quot;</span>: <span class="s2">&quot;12345&quot;</span>,
     <span class="s2">&quot;_index&quot;</span>: <span class="s2">&quot;opendxl-elasticsearch-service-examples&quot;</span>,
@@ -112,11 +103,11 @@ Response to the get request:
 </div>
 <div class="section" id="details">
 <h2>Details<a class="headerlink" href="#details" title="Permalink to this headline">¶</a></h2>
-<p>In order to enable the use of the <code class="docutils literal"><span class="pre">index</span></code> and <code class="docutils literal"><span class="pre">get</span></code> APIs, both API names
-are listed in the <code class="docutils literal"><span class="pre">apiNames</span></code> setting under the <code class="docutils literal"><span class="pre">[General]</span></code> section in the
-<code class="docutils literal"><span class="pre">sample</span></code> “dxlelasticsearchservice.config” file that the service uses:</p>
+<p>In order to enable the use of the <code class="docutils literal notranslate"><span class="pre">index</span></code> and <code class="docutils literal notranslate"><span class="pre">get</span></code> APIs, both API names
+are listed in the <code class="docutils literal notranslate"><span class="pre">apiNames</span></code> setting under the <code class="docutils literal notranslate"><span class="pre">[General]</span></code> section in the
+<code class="docutils literal notranslate"><span class="pre">sample</span></code> &quot;dxlelasticsearchservice.config&quot; file that the service uses:</p>
 <blockquote>
-<div><div class="highlight-ini"><div class="highlight"><pre><span></span><span class="k">[General]</span>
+<div><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[General]</span>
 <span class="na">apiNames</span><span class="o">=</span><span class="s">index,get...</span>
 </pre></div>
 </div>
@@ -125,7 +116,7 @@ are listed in the <code class="docutils literal"><span class="pre">apiNames</spa
 <a class="reference internal" href="configuration.html#dxl-service-config-file-label"><span class="std std-ref">Service Configuration File</span></a> section.</p>
 <p>The majority of the sample code is shown below:</p>
 <blockquote>
-<div><div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create the client</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create the client</span>
 <span class="k">with</span> <span class="n">DxlClient</span><span class="p">(</span><span class="n">config</span><span class="p">)</span> <span class="k">as</span> <span class="n">client</span><span class="p">:</span>
 
     <span class="c1"># Connect to the fabric</span>
@@ -186,30 +177,30 @@ are listed in the <code class="docutils literal"><span class="pre">apiNames</spa
 </div>
 </div></blockquote>
 <p>After connecting to the DXL fabric, a request message is created with a topic
-that targets the “index” method of the Elasticsearch API DXL service.</p>
-<p>The next step is to set the <code class="docutils literal"><span class="pre">payload</span></code> of the request message. The contents of
-the payload include the <code class="docutils literal"><span class="pre">index</span></code>, type (<code class="docutils literal"><span class="pre">doc_type</span></code>), and <code class="docutils literal"><span class="pre">id</span></code> at which to
-store the document. The contents also include a <code class="docutils literal"><span class="pre">dict</span></code> representing the
-<code class="docutils literal"><span class="pre">body</span></code> of the document to store.</p>
+that targets the &quot;index&quot; method of the Elasticsearch API DXL service.</p>
+<p>The next step is to set the <code class="docutils literal notranslate"><span class="pre">payload</span></code> of the request message. The contents of
+the payload include the <code class="docutils literal notranslate"><span class="pre">index</span></code>, type (<code class="docutils literal notranslate"><span class="pre">doc_type</span></code>), and <code class="docutils literal notranslate"><span class="pre">id</span></code> at which to
+store the document. The contents also include a <code class="docutils literal notranslate"><span class="pre">dict</span></code> representing the
+<code class="docutils literal notranslate"><span class="pre">body</span></code> of the document to store.</p>
 <p>From the
 <a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.index">Elasticsearch Python Index API</a>
 documentation:</p>
 <blockquote>
-<div><cite>“Adds or updates a typed JSON document in a specific index, making it
-searchable.”</cite></div></blockquote>
+<div><cite>&quot;Adds or updates a typed JSON document in a specific index, making it
+searchable.&quot;</cite></div></blockquote>
 <p>The next step is to perform a synchronous request via the DXL fabric. If the
 response message is not an error, its contents are displayed.</p>
 <p>To confirm that the document was stored properly, a second request message is
-created with a topic that targets the “get” method of the Elasticsearch API DXL
+created with a topic that targets the &quot;get&quot; method of the Elasticsearch API DXL
 service.</p>
-<p>The next step is to set the <code class="docutils literal"><span class="pre">payload</span></code> of the request message. The contents of
-the payload include the <code class="docutils literal"><span class="pre">index</span></code>, type (<code class="docutils literal"><span class="pre">doc_type</span></code>), and <code class="docutils literal"><span class="pre">id</span></code> of the
+<p>The next step is to set the <code class="docutils literal notranslate"><span class="pre">payload</span></code> of the request message. The contents of
+the payload include the <code class="docutils literal notranslate"><span class="pre">index</span></code>, type (<code class="docutils literal notranslate"><span class="pre">doc_type</span></code>), and <code class="docutils literal notranslate"><span class="pre">id</span></code> of the
 document to retrieve.</p>
 <p>From the
 <a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.get">Elasticsearch Python Get API</a>
 documentation:</p>
 <blockquote>
-<div><cite>“Get a typed JSON document from the index based on its id.”</cite></div></blockquote>
+<div><cite>&quot;Get a typed JSON document from the index based on its id.&quot;</cite></div></blockquote>
 <p>The next step is to perform a synchronous request via the DXL fabric. If the
 response message is not an error, its contents are displayed.</p>
 </div>
@@ -246,12 +237,14 @@ response message is not an error, its contents are displayed.</p>
    </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
+    <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <div><input type="text" name="q" /></div>
-      <div><input type="submit" value="Go" /></div>
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
+    </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
@@ -273,12 +266,12 @@ response message is not an error, its contents are displayed.</p>
         <li class="right" >
           <a href="sampleconfig.html" title="Samples Configuration"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.1.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, McAfee LLC.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.6.4.
+        &#169; Copyright 2018, McAfee LLC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.7.4.
     </div>
   </body>
 </html>

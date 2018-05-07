@@ -221,60 +221,61 @@ Elasticsearch DXL Python Service (dxlelasticsearchservice.config)
         The section name must match the name of the event group in the ``eventGroupNames`` property (for example:
         ``[eventgroup1]``).
 
-        +----------------------------------+----------+--------------------------------------------------------------------------------------------------------+
-        | Name                             | Required | Description                                                                                            |
-        +==================================+==========+========================================================================================================+
-        | topics                           | yes      | The list of topics to subscribe to the DXL fabric for event                                            |
-        |                                  |          | notifications, delimited by commas.                                                                    |
-        |                                  |          |                                                                                                        |
-        |                                  |          | For example: ``es1,es2,es3``                                                                           |
-        |                                  |          |                                                                                                        |
-        |                                  |          | For each event notification received, corresponding documents                                          |
-        |                                  |          | with the event payload are indexed to Elasticsearch.                                                   |
-        +----------------------------------+----------+--------------------------------------------------------------------------------------------------------+
-        | documentIndex                    | yes      | Index to use in storing the event document to Elasticsearch. See:                                      |
-        |                                  |          |                                                                                                        |
-        |                                  |          | https://www.elastic.co/guide/en/elasticsearch/guide/current/_document_metadata.html#_index             |
-        +----------------------------------+----------+--------------------------------------------------------------------------------------------------------+
-        | documentType                     | yes      | Type of the document to store to Elasticsearch. See:                                                   |
-        |                                  |          |                                                                                                        |
-        |                                  |          | https://www.elastic.co/guide/en/elasticsearch/guide/current/_document_metadata.html#_type              |
-        +----------------------------------+----------+--------------------------------------------------------------------------------------------------------+
-        | idFieldName                      | no       | Name of the field in the event payload whose corresponding value                                       |
-        |                                  |          | should be used as the ID of the document stored to                                                     |
-        |                                  |          | Elasticsearch. See:                                                                                    |
-        |                                  |          |                                                                                                        |
-        |                                  |          | https://www.elastic.co/guide/en/elasticsearch/guide/current/_document_metadata.html#_id                |
-        |                                  |          |                                                                                                        |
-        |                                  |          | Defaults to using an unique ID that Elasticsearch automatically                                        |
-        |                                  |          | generates.                                                                                             |
-        |                                  |          |                                                                                                        |
-        |                                  |          | For example, an event payload may have the following content:                                          |
-        |                                  |          |                                                                                                        |
-        |                                  |          | .. code-block:: json                                                                                   |
-        |                                  |          |                                                                                                        |
-        |                                  |          |     { "myid": "12345",                                                                                 |
-        |                                  |          |       "mytext": "hello world" }                                                                        |
-        |                                  |          |                                                                                                        |
-        |                                  |          | If idFieldName is set to ``myid``, the value ``12345`` would                                           |
-        |                                  |          | be extracted from the payload and used as the document ID. If                                          |
-        |                                  |          | idFieldName is set but the value cannot be found in the event                                          |
-        |                                  |          | payload, the document will not be stored.                                                              |
-        |                                  |          |                                                                                                        |
-        |                                  |          | **NOTE: The idFieldName can currently only refer to a key                                              |
-        |                                  |          | which exists at the top-level of the event payload. In order                                           |
-        |                                  |          | to map the ID from a field which appears in a nested                                                   |
-        |                                  |          | structure in the event payload, a "transformScript" would                                              |
-        |                                  |          | need to be used.**                                                                                     |
-        +----------------------------------+----------+--------------------------------------------------------------------------------------------------------+
-        | transformScript                  | no       | Path to a Python script which will receive the event payload and                                       |
-        |                                  |          | optionally transform it into documents to be stored into                                               |
-        |                                  |          | Elasticsearch. The transform script must define an ``on_event``                                        |
-        |                                  |          | function which accepts two parameters: the                                                             |
-        |                                  |          | ``dxlclient.message.Event`` object received for the event                                              |
-        |                                  |          | callback and a dictionary containing a default set of parameters                                       |
-        |                                  |          | for a corresponding document to be stored to Elasticsearch.                                            |
-        +----------------------------------+----------+--------------------------------------------------------------------------------------------------------+
+        +----------------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+        | Name                             | Required | Description                                                                                                                                           |
+        +==================================+==========+=======================================================================================================================================================+
+        | topics                           | yes      | The list of topics to subscribe to the DXL fabric for event                                                                                           |
+        |                                  |          | notifications, delimited by commas.                                                                                                                   |
+        |                                  |          |                                                                                                                                                       |
+        |                                  |          | For example: ``es1,es2,es3``                                                                                                                          |
+        |                                  |          |                                                                                                                                                       |
+        |                                  |          | For each event notification received, corresponding documents                                                                                         |
+        |                                  |          | with the event payload are indexed to Elasticsearch.                                                                                                  |
+        +----------------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+        | documentIndex                    | yes      | Index to use in storing the event document to Elasticsearch.                                                                                          |
+        |                                  |          | See the                                                                                                                                               |
+        |                                  |          | `ElasticSearch Index API Documentation <https://www.elastic.co/guide/en/elasticsearch/guide/current/_document_metadata.html#_index>`__                |
+        |                                  |          | for additional details.                                                                                                                               |
+        +----------------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+        | documentType                     | yes      | Type of the document to store to Elasticsearch.                                                                                                       |
+        |                                  |          | See the                                                                                                                                               |
+        |                                  |          | `ElasticSearch Type API Documentation <https://www.elastic.co/guide/en/elasticsearch/guide/current/_document_metadata.html#_type>`__                  |
+        |                                  |          | for additional details.                                                                                                                               |
+        +----------------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+        | idFieldName                      | no       | Name of the field in the event payload whose corresponding value                                                                                      |
+        |                                  |          | should be used as the ID of the document stored to                                                                                                    |
+        |                                  |          | Elasticsearch. See the                                                                                                                                |
+        |                                  |          | `Elasticsearch Id API Documentation <https://www.elastic.co/guide/en/elasticsearch/guide/current/_document_metadata.html#_id>`__                      |
+        |                                  |          | for additional details.                                                                                                                               |
+        |                                  |          | Defaults to using an unique ID that Elasticsearch automatically                                                                                       |
+        |                                  |          | generates.                                                                                                                                            |
+        |                                  |          |                                                                                                                                                       |
+        |                                  |          | For example, an event payload may have the following content:                                                                                         |
+        |                                  |          |                                                                                                                                                       |
+        |                                  |          | .. code-block:: json                                                                                                                                  |
+        |                                  |          |                                                                                                                                                       |
+        |                                  |          |     { "myid": "12345",                                                                                                                                |
+        |                                  |          |       "mytext": "hello world" }                                                                                                                       |
+        |                                  |          |                                                                                                                                                       |
+        |                                  |          | If idFieldName is set to ``myid``, the value ``12345`` would                                                                                          |
+        |                                  |          | be extracted from the payload and used as the document ID. If                                                                                         |
+        |                                  |          | idFieldName is set but the value cannot be found in the event                                                                                         |
+        |                                  |          | payload, the document will not be stored.                                                                                                             |
+        |                                  |          |                                                                                                                                                       |
+        |                                  |          | **NOTE: The idFieldName can currently only refer to a key                                                                                             |
+        |                                  |          | which exists at the top-level of the event payload. In order                                                                                          |
+        |                                  |          | to map the ID from a field which appears in a nested                                                                                                  |
+        |                                  |          | structure in the event payload, a "transformScript" would                                                                                             |
+        |                                  |          | need to be used.**                                                                                                                                    |
+        +----------------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
+        | transformScript                  | no       | Path to a Python script which will receive the event payload and                                                                                      |
+        |                                  |          | optionally transform it into documents to be stored into                                                                                              |
+        |                                  |          | Elasticsearch. The transform script must define an ``on_event``                                                                                       |
+        |                                  |          | function which accepts two parameters: the                                                                                                            |
+        |                                  |          | ``dxlclient.message.Event`` object received for the event                                                                                             |
+        |                                  |          | callback and a dictionary containing a default set of parameters                                                                                      |
+        |                                  |          | for a corresponding document to be stored to Elasticsearch.                                                                                           |
+        +----------------------------------+----------+-------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 Logging File (logging.config)
 -----------------------------

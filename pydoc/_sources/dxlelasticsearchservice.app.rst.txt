@@ -1,5 +1,5 @@
-dxlelasticsearchservice\.app module
-===================================
+dxlelasticsearchservice.app module
+==================================
 
 .. automodule:: dxlelasticsearchservice.app
     :members:
