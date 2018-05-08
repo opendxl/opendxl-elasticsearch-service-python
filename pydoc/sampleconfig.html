@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Samples Configuration &#8212; Elasticsearch DXL Python Service 0.2.0 documentation</title>
+    <title>Samples Configuration &#8212; DomainTools DXL Python Service 0.2.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -15,7 +15,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Basic Index Example" href="basicindexexample.html" />
+    <link rel="next" title="Basic Account Information Example" href="basicaccountinformationexample.html" />
     <link rel="prev" title="Docker Support" href="docker.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
@@ -28,12 +28,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="basicindexexample.html" title="Basic Index Example"
+          <a href="basicaccountinformationexample.html" title="Basic Account Information Example"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="docker.html" title="Docker Support"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.2.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">DomainTools DXL Python Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -44,33 +44,24 @@
             
   <div class="section" id="samples-configuration">
 <h1>Samples Configuration<a class="headerlink" href="#samples-configuration" title="Permalink to this headline">¶</a></h1>
-<p>The Elasticsearch DXL Python Service distribution contains a client
-configuration file (<code class="docutils literal notranslate"><span class="pre">dxlclient.config</span></code>) located in the <code class="docutils literal notranslate"><span class="pre">sample</span></code>
-sub-directory that must be populated in order for the samples to connect to the
-DXL fabric.</p>
-<p>The steps to populate this configuration file are the same as those documented
-in the <cite>OpenDXL Python SDK</cite>, see the
+<p>The DomainTools DXL Python Service distribution contains a configuration file (<code class="docutils literal notranslate"><span class="pre">dxlclient.config</span></code>) located
+in the <code class="docutils literal notranslate"><span class="pre">sample</span></code> sub-directory that must be populated in order for the samples to connect to the DXL fabric.</p>
+<p>The steps to populate this configuration file are the same as those documented in the <cite>OpenDXL Python SDK</cite>, see the
 <a class="reference external" href="https://opendxl.github.io/opendxl-client-python/pydoc/sampleconfig.html">OpenDXL Python SDK Samples Configuration</a>
 page for more information.</p>
 <p>The following is an example of a populated configuration file:</p>
 <blockquote>
-<div><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[Certs]</span>
-<span class="na">BrokerCertChain</span><span class="o">=</span><span class="s">c:\\certificates\\brokercerts.crt</span>
-<span class="na">CertFile</span><span class="o">=</span><span class="s">c:\\certificates\\client.crt</span>
-<span class="na">PrivateKey</span><span class="o">=</span><span class="s">c:\\certificates\\client.key</span>
+<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">Certs</span><span class="p">]</span>
+<span class="n">BrokerCertChain</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\\<span class="n">certificates</span>\\<span class="n">brokercerts</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">CertFile</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\\<span class="n">certificates</span>\\<span class="n">client</span><span class="o">.</span><span class="n">crt</span>
+<span class="n">PrivateKey</span><span class="o">=</span><span class="n">c</span><span class="p">:</span>\\<span class="n">certificates</span>\\<span class="n">client</span><span class="o">.</span><span class="n">key</span>
 
-<span class="k">[Brokers]</span>
-<span class="na">{5d73b77f-8c4b-4ae0-b437-febd12facfd4}</span><span class="o">=</span><span class="s">{5d73b77f-8c4b-4ae0-b437-febd12facfd4};8883;mybroker.mcafee.com;192.168.1.12</span>
-<span class="na">{24397e4d-645f-4f2f-974f-f98c55bdddf7}</span><span class="o">=</span><span class="s">{24397e4d-645f-4f2f-974f-f98c55bdddf7};8883;mybroker2.mcafee.com;192.168.1.13</span>
+<span class="p">[</span><span class="n">Brokers</span><span class="p">]</span>
+<span class="p">{</span><span class="mi">5</span><span class="n">d73b77f</span><span class="o">-</span><span class="mi">8</span><span class="n">c4b</span><span class="o">-</span><span class="mi">4</span><span class="n">ae0</span><span class="o">-</span><span class="n">b437</span><span class="o">-</span><span class="n">febd12facfd4</span><span class="p">}</span><span class="o">=</span><span class="p">{</span><span class="mi">5</span><span class="n">d73b77f</span><span class="o">-</span><span class="mi">8</span><span class="n">c4b</span><span class="o">-</span><span class="mi">4</span><span class="n">ae0</span><span class="o">-</span><span class="n">b437</span><span class="o">-</span><span class="n">febd12facfd4</span><span class="p">};</span><span class="mi">8883</span><span class="p">;</span><span class="n">mybroker</span><span class="o">.</span><span class="n">mcafee</span><span class="o">.</span><span class="n">com</span><span class="p">;</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.12</span>
+<span class="p">{</span><span class="mf">24397e4</span><span class="n">d</span><span class="o">-</span><span class="mi">645</span><span class="n">f</span><span class="o">-</span><span class="mi">4</span><span class="n">f2f</span><span class="o">-</span><span class="mi">974</span><span class="n">f</span><span class="o">-</span><span class="n">f98c55bdddf7</span><span class="p">}</span><span class="o">=</span><span class="p">{</span><span class="mf">24397e4</span><span class="n">d</span><span class="o">-</span><span class="mi">645</span><span class="n">f</span><span class="o">-</span><span class="mi">4</span><span class="n">f2f</span><span class="o">-</span><span class="mi">974</span><span class="n">f</span><span class="o">-</span><span class="n">f98c55bdddf7</span><span class="p">};</span><span class="mi">8883</span><span class="p">;</span><span class="n">mybroker2</span><span class="o">.</span><span class="n">mcafee</span><span class="o">.</span><span class="n">com</span><span class="p">;</span><span class="mf">192.168</span><span class="o">.</span><span class="mf">1.13</span>
 </pre></div>
 </div>
 </div></blockquote>
-<p>The <code class="docutils literal notranslate"><span class="pre">sample</span></code> sub-directory also contains a service configuration file
-(<code class="docutils literal notranslate"><span class="pre">dxlelasticsearchservice.config</span></code>) with settings specific to the APIs and
-event data that the samples use. The Server Section in this file must be
-populated with appropriate details for the Elasticsearch server configuration.
-For more details on this configuration, see the
-<a class="reference internal" href="configuration.html#dxl-service-config-file-label"><span class="std std-ref">Service Configuration File</span></a> section.</p>
 </div>
 
 
@@ -83,8 +74,8 @@ For more details on this configuration, see the
   <p class="topless"><a href="docker.html"
                         title="previous chapter">Docker Support</a></p>
   <h4>Next topic</h4>
-  <p class="topless"><a href="basicindexexample.html"
-                        title="next chapter">Basic Index Example</a></p>
+  <p class="topless"><a href="basicaccountinformationexample.html"
+                        title="next chapter">Basic Account Information Example</a></p>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
@@ -118,12 +109,12 @@ For more details on this configuration, see the
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="basicindexexample.html" title="Basic Index Example"
+          <a href="basicaccountinformationexample.html" title="Basic Account Information Example"
              >next</a> |</li>
         <li class="right" >
           <a href="docker.html" title="Docker Support"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.2.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">DomainTools DXL Python Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
