@@ -1,7 +1,0 @@
-dxldomaintoolsservice.app module
-================================
-
-.. automodule:: dxldomaintoolsservice.app
-    :members:
-    :undoc-members:
-    :show-inheritance:

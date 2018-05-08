@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Configuration &#8212; DomainTools DXL Python Service 0.2.0 documentation</title>
+    <title>Configuration &#8212; Elasticsearch DXL Python Service 0.2.0 documentation</title>
     <link rel="stylesheet" href="_static/classic.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" src="_static/documentation_options.js"></script>
@@ -33,7 +33,7 @@
         <li class="right" >
           <a href="installation.html" title="Installation"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">DomainTools DXL Python Service 0.2.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>  
 
@@ -44,15 +44,15 @@
             
   <div class="section" id="configuration">
 <h1>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h1>
-<p>The DomainTools DXL Python Service application requires a set of configuration files to operate.</p>
+<p>The Elasticsearch DXL Python Service application requires a set of configuration files to operate.</p>
 <p>This distribution contains a <code class="docutils literal notranslate"><span class="pre">config</span></code> sub-directory that includes the configuration files that must
 be populated prior to running the application.</p>
-<p>Each of these files are documented throughout the remained of this page.</p>
+<p>Each of these files are documented throughout the remainder of this page.</p>
 <p>Application configuration directory:</p>
 <blockquote>
 <div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">config</span><span class="o">/</span>
     <span class="n">dxlclient</span><span class="o">.</span><span class="n">config</span>
-    <span class="n">dxldomaintoolsservice</span><span class="o">.</span><span class="n">config</span>
+    <span class="n">dxlelasticsearchservice</span><span class="o">.</span><span class="n">config</span>
     <span class="n">logging</span><span class="o">.</span><span class="n">config</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -80,29 +80,49 @@ page for more information.</p>
 </div></blockquote>
 </div></blockquote>
 </div>
-<div class="section" id="domaintools-dxl-python-service-dxldomaintoolsservice-config">
-<span id="dxl-service-config-file-label"></span><h2>DomainTools DXL Python Service (dxldomaintoolsservice.config)<a class="headerlink" href="#domaintools-dxl-python-service-dxldomaintoolsservice-config" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="elasticsearch-dxl-python-service-dxlelasticsearchservice-config">
+<span id="dxl-service-config-file-label"></span><h2>Elasticsearch DXL Python Service (dxlelasticsearchservice.config)<a class="headerlink" href="#elasticsearch-dxl-python-service-dxlelasticsearchservice-config" title="Permalink to this headline">¶</a></h2>
 <blockquote>
-<div><p>The required <code class="docutils literal notranslate"><span class="pre">dxldomaintoolsservice.config</span></code> file is used to configure the application.</p>
+<div><p>The required <code class="docutils literal notranslate"><span class="pre">dxlelasticsearchservice.config</span></code> file is used to configure
+the application.</p>
 <p>The following is an example of a populated application configuration file:</p>
 <blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">General</span><span class="p">]</span>
-<span class="c1"># The DomainTools API User (required)</span>
-<span class="n">apiUser</span><span class="o">=--</span> <span class="n">YOUR</span> <span class="n">API</span> <span class="n">USER</span> <span class="o">--</span>
+<div><div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="k">[General]</span>
+<span class="na">serverNames</span><span class="o">=</span><span class="s">es1</span>
+<span class="na">eventGroupNames</span><span class="o">=</span><span class="s">eventgroup1</span>
+<span class="na">apiNames</span><span class="o">=</span><span class="s">index,get,update,delete</span>
 
-<span class="c1"># The DomainTools API Key (required)</span>
-<span class="n">apiKey</span><span class="o">=--</span> <span class="n">YOUR</span> <span class="n">API</span> <span class="n">KEY</span> <span class="o">--</span>
+<span class="k">[es1]</span>
+<span class="na">host</span><span class="o">=</span><span class="s">elasticserver1</span>
+<span class="na">user</span><span class="o">=</span><span class="s">elastic</span>
+<span class="na">password</span><span class="o">=</span><span class="s">elasticpassword</span>
+<span class="na">useSSL</span><span class="o">=</span><span class="s">yes</span>
+<span class="na">verifyCertificate</span><span class="o">=</span><span class="s">yes</span>
+<span class="na">verifyCertBundle</span><span class="o">=</span><span class="s">esCA.crt</span>
+<span class="na">verifyHostName</span><span class="o">=</span><span class="s">yes</span>
+<span class="na">clientCertificate</span><span class="o">=</span><span class="s">client1.crt</span>
+<span class="na">clientKey</span><span class="o">=</span><span class="s">client1.key</span>
+
+<span class="k">[eventgroup1]</span>
+<span class="na">topics</span><span class="o">=</span><span class="s">/myservice/mytopic1,/myservice/mytopic2</span>
+<span class="na">documentIndex</span><span class="o">=</span><span class="s">opendxl-services</span>
+<span class="na">documentType</span><span class="o">=</span><span class="s">myservice</span>
+<span class="na">idFieldName</span><span class="o">=</span><span class="s">event_id</span>
+<span class="na">transformScript</span><span class="o">=</span><span class="s">transform.py</span>
 </pre></div>
 </div>
 </div></blockquote>
 <p><strong>General</strong></p>
 <blockquote>
-<div><p>The <code class="docutils literal notranslate"><span class="pre">General</span></code>  section is used to specify the DomainTools API User and API Key:</p>
+<div><p>The <code class="docutils literal notranslate"><span class="pre">[General]</span></code> section is used to specify the list of Elasticsearch
+servers, Elasticsearch methods which should be available to invoke via
+DXL, and information for DXL event notifications which should be stored
+to Elasticsearch.</p>
 <table border="1" class="docutils">
 <colgroup>
-<col width="24%" />
-<col width="10%" />
-<col width="67%" />
+<col width="23%" />
+<col width="7%" />
+<col width="70%" />
 </colgroup>
 <thead valign="bottom">
 <tr class="row-odd"><th class="head">Name</th>
@@ -111,13 +131,238 @@ page for more information.</p>
 </tr>
 </thead>
 <tbody valign="top">
-<tr class="row-even"><td>apiUser</td>
-<td>yes</td>
-<td>The DomainTools API username for authenticating with DomainTools</td>
+<tr class="row-even"><td>serviceUniqueId</td>
+<td>no</td>
+<td><p class="first">An optional unique identifier used to identify the
+opendxl-elasticsearch service on the DXL fabric. If set, this
+unique identifier will be appended to the name of each request
+topic added to the fabric. For example, if the serviceUniqueId is
+set to <code class="docutils literal notranslate"><span class="pre">sample</span></code>, the request topic names would start with the
+following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/opendxl-elasticsearch/service/elasticsearch-api/sample/&lt;method&gt;</span></code></p>
+<p>If serviceUniqueId is not set, request topic names would not
+include an id segment, for example:</p>
+<p class="last"><code class="docutils literal notranslate"><span class="pre">/opendxl-elasticsearch/service/elasticsearch-api/&lt;method&gt;</span></code></p>
+</td>
 </tr>
-<tr class="row-odd"><td>apiKey</td>
+<tr class="row-odd"><td>serverNames</td>
 <td>yes</td>
-<td>The DomainTools API key for authenticating with DomainTools</td>
+<td><p class="first">The list of Elasticsearch servers to expose to the DXL fabric,
+delimited by commas.</p>
+<p>For example: <code class="docutils literal notranslate"><span class="pre">es1,es2,es3</span></code></p>
+<p class="last">For each name specified, a corresponding section must be defined within
+this configuration file that provides detailed information about the
+server (see &quot;Server Section&quot; below).</p>
+</td>
+</tr>
+<tr class="row-even"><td>eventGroupNames</td>
+<td>no</td>
+<td><p class="first">The list of event groups for which any DXL events received are indexed
+to Elasticsearch, delimited by commas.</p>
+<p>For example: <code class="docutils literal notranslate"><span class="pre">eventgroup1,eventgroup2,eventgroup3</span></code></p>
+<p class="last">For each name specified, a corresponding section must be defined within
+this configuration file that provides detailed information about the
+event group (see &quot;Event Group Section&quot; below).</p>
+</td>
+</tr>
+<tr class="row-odd"><td>apiNames</td>
+<td>no</td>
+<td><p class="first">The list of Elasticsearch APIs for which corresponding request topics
+should be exposed to the DXL fabric.</p>
+<p>For example: <code class="docutils literal notranslate"><span class="pre">index,get,update,delete</span></code></p>
+<p>With this example and the <code class="docutils literal notranslate"><span class="pre">serviceUniqueId</span></code> setting set to
+<code class="docutils literal notranslate"><span class="pre">sample</span></code>, the request topics exposed to the DXL fabric would be:</p>
+<p><code class="docutils literal notranslate"><span class="pre">/opendxl-elasticsearch/service/elasticsearch-api/sample/index</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">/opendxl-elasticsearch/service/elasticsearch-api/sample/get</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">/opendxl-elasticsearch/service/elasticsearch-api/sample/update</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">/opendxl-elasticsearch/service/elasticsearch-api/sample/delete</span></code></p>
+<p>The total list of available API method names and parameters is at:</p>
+<p><a class="reference external" href="https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch">https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch</a></p>
+<p class="last">For each name specified, a corresponding section must be defined within
+this configuration file that provides detailed information about the
+event group.</p>
+</td>
+</tr>
+<tr class="row-even"><td>reloadTransformScriptsOnChange</td>
+<td>no</td>
+<td><p class="first">Controls whether or not changes made to event group transform scripts while the service is running can
+be reloaded dynamically. Setting this to <code class="docutils literal notranslate"><span class="pre">yes</span></code> can be helpful to reduce service restarts while
+developing a transform script.</p>
+<p class="last">Defaults to <code class="docutils literal notranslate"><span class="pre">no</span></code>, load transform scripts only at service startup time.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p><strong>Server Section (1 per Elasticsearch server)</strong></p>
+<blockquote>
+<div><p>Each server specified in the <code class="docutils literal notranslate"><span class="pre">serverNames</span></code> property of the <code class="docutils literal notranslate"><span class="pre">[General]</span></code> section must have a
+section defined which contains details about the particular Elasticsearch server.</p>
+<p>The section name must match the name of the server in the <code class="docutils literal notranslate"><span class="pre">serverNames</span></code> property (for example: <code class="docutils literal notranslate"><span class="pre">[es1]</span></code>).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="7%" />
+<col width="70%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>host</td>
+<td>yes</td>
+<td>The Elasticsearch server hostname or IP address.</td>
+</tr>
+<tr class="row-odd"><td>port</td>
+<td>no</td>
+<td>The Elasticsearch server HTTP API port. Defaults to <code class="docutils literal notranslate"><span class="pre">9200</span></code>.</td>
+</tr>
+<tr class="row-even"><td>urlPrefix</td>
+<td>no</td>
+<td><p class="first">The URL prefix under which the Elasticsearch server's HTTP API
+is hosted. For example, if this were set to <code class="docutils literal notranslate"><span class="pre">api</span></code>, requests that
+the OpenDXL Elasticsearch service makes to the Elasticsearch
+server would start with the following:</p>
+<p><code class="docutils literal notranslate"><span class="pre">http(s)://&lt;host&gt;:&lt;port&gt;/api</span></code></p>
+<p class="last">Defaults to no prefix, making requests to the root path.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>user</td>
+<td>no</td>
+<td>The name of the user used when making requests to the
+Elasticsearch server. Defaults to no user name. Required if
+<code class="docutils literal notranslate"><span class="pre">password</span></code> is specified.</td>
+</tr>
+<tr class="row-even"><td>password</td>
+<td>no</td>
+<td>The password associated with the user used when making requests
+to the Elasticsearch server. Defaults to no password. Required
+if <code class="docutils literal notranslate"><span class="pre">user</span></code> is specified.</td>
+</tr>
+<tr class="row-odd"><td>useSSL</td>
+<td>no</td>
+<td>Whether or not to use SSL/TLS for requests made to the
+Elasticsearch server. If set to <code class="docutils literal notranslate"><span class="pre">yes</span></code>, SSL/TLS is used.
+Defaults to <code class="docutils literal notranslate"><span class="pre">no</span></code>.</td>
+</tr>
+<tr class="row-even"><td>verifyCertificate</td>
+<td>no</td>
+<td>Whether to verify that Elasticsearch server's certificate was
+signed by a valid certificate authority when SSL/TLS is being
+used. Defaults to <code class="docutils literal notranslate"><span class="pre">yes</span></code>.</td>
+</tr>
+<tr class="row-odd"><td>verifyCertBundle</td>
+<td>no</td>
+<td>A path to a CA Bundle file containing certificates of trusted
+CAs. The CA Bundle is used to ensure that the Elasticsearch
+server being connected to was signed by a valid authority. Only
+applicable if <code class="docutils literal notranslate"><span class="pre">verifyCertificate</span></code> is <code class="docutils literal notranslate"><span class="pre">yes</span></code>.</td>
+</tr>
+<tr class="row-even"><td>verifyHostName</td>
+<td>no</td>
+<td>Controls how the name in the Elasticsearch server's certificate
+is validated if SSL/TLS is being used. If set to <code class="docutils literal notranslate"><span class="pre">yes</span></code> or not
+specified, the name must match the value in the <code class="docutils literal notranslate"><span class="pre">host</span></code>
+setting. If set to <code class="docutils literal notranslate"><span class="pre">no</span></code>, the hostname is not validated. If set
+to a different value, the hostname must match the value in the
+setting. For example, if the value is set to <code class="docutils literal notranslate"><span class="pre">myserver</span></code>, the
+name in the Elasticsearch server certificate must be
+<code class="docutils literal notranslate"><span class="pre">myserver</span></code> in order for the connection to be allowed.</td>
+</tr>
+<tr class="row-odd"><td>clientCertificate</td>
+<td>no</td>
+<td>A path to a client certificate supplied to the Elasticsearch
+server for TLS/SSL connections. Defaults to not using a client
+certificate.</td>
+</tr>
+<tr class="row-even"><td>clientKey</td>
+<td>no</td>
+<td>A path to a client private key used for TLS/SSL connections made
+to the Elasticsearch server. Defaults to not using a client
+private key.</td>
+</tr>
+</tbody>
+</table>
+</div></blockquote>
+<p><strong>Event Group Section (1 per event group)</strong></p>
+<blockquote>
+<div><p>Each event group specified in the <code class="docutils literal notranslate"><span class="pre">eventGroupNames</span></code> property of the <code class="docutils literal notranslate"><span class="pre">[General]</span></code> section must have a
+section defined which contains details about the particular event group.</p>
+<p>The section name must match the name of the event group in the <code class="docutils literal notranslate"><span class="pre">eventGroupNames</span></code> property (for example:
+<code class="docutils literal notranslate"><span class="pre">[eventgroup1]</span></code>).</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="5%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Required</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>topics</td>
+<td>yes</td>
+<td><p class="first">The list of topics to subscribe to the DXL fabric for event
+notifications, delimited by commas.</p>
+<p>For example: <code class="docutils literal notranslate"><span class="pre">es1,es2,es3</span></code></p>
+<p class="last">For each event notification received, corresponding documents
+with the event payload are indexed to Elasticsearch.</p>
+</td>
+</tr>
+<tr class="row-odd"><td>documentIndex</td>
+<td>yes</td>
+<td>Index to use in storing the event document to Elasticsearch.
+See the
+<a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/guide/current/_document_metadata.html#_index">ElasticSearch Index API Documentation</a>
+for additional details.</td>
+</tr>
+<tr class="row-even"><td>documentType</td>
+<td>yes</td>
+<td>Type of the document to store to Elasticsearch.
+See the
+<a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/guide/current/_document_metadata.html#_type">ElasticSearch Type API Documentation</a>
+for additional details.</td>
+</tr>
+<tr class="row-odd"><td>idFieldName</td>
+<td>no</td>
+<td><p class="first">Name of the field in the event payload whose corresponding value
+should be used as the ID of the document stored to
+Elasticsearch. See the
+<a class="reference external" href="https://www.elastic.co/guide/en/elasticsearch/guide/current/_document_metadata.html#_id">Elasticsearch Id API Documentation</a>
+for additional details.
+Defaults to using an unique ID that Elasticsearch automatically
+generates.</p>
+<p>For example, an event payload may have the following content:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span> <span class="nt">&quot;myid&quot;</span><span class="p">:</span> <span class="s2">&quot;12345&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;mytext&quot;</span><span class="p">:</span> <span class="s2">&quot;hello world&quot;</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>If idFieldName is set to <code class="docutils literal notranslate"><span class="pre">myid</span></code>, the value <code class="docutils literal notranslate"><span class="pre">12345</span></code> would
+be extracted from the payload and used as the document ID. If
+idFieldName is set but the value cannot be found in the event
+payload, the document will not be stored.</p>
+<p class="last"><strong>NOTE: The idFieldName can currently only refer to a key
+which exists at the top-level of the event payload. In order
+to map the ID from a field which appears in a nested
+structure in the event payload, a &quot;transformScript&quot; would
+need to be used.</strong></p>
+</td>
+</tr>
+<tr class="row-even"><td>transformScript</td>
+<td>no</td>
+<td>Path to a Python script which will receive the event payload and
+optionally transform it into documents to be stored into
+Elasticsearch. The transform script must define an <code class="docutils literal notranslate"><span class="pre">on_event</span></code>
+function which accepts two parameters: the
+<code class="docutils literal notranslate"><span class="pre">dxlclient.message.Event</span></code> object received for the event
+callback and a dictionary containing a default set of parameters
+for a corresponding document to be stored to Elasticsearch.</td>
 </tr>
 </tbody>
 </table>
@@ -141,7 +386,7 @@ page for more information.</p>
   <ul>
 <li><a class="reference internal" href="#">Configuration</a><ul>
 <li><a class="reference internal" href="#dxl-client-configuration-file-dxlclient-config">DXL Client Configuration File (dxlclient.config)</a></li>
-<li><a class="reference internal" href="#domaintools-dxl-python-service-dxldomaintoolsservice-config">DomainTools DXL Python Service (dxldomaintoolsservice.config)</a></li>
+<li><a class="reference internal" href="#elasticsearch-dxl-python-service-dxlelasticsearchservice-config">Elasticsearch DXL Python Service (dxlelasticsearchservice.config)</a></li>
 <li><a class="reference internal" href="#logging-file-logging-config">Logging File (logging.config)</a></li>
 </ul>
 </li>
@@ -191,7 +436,7 @@ page for more information.</p>
         <li class="right" >
           <a href="installation.html" title="Installation"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">DomainTools DXL Python Service 0.2.0 documentation</a> &#187;</li> 
+        <li class="nav-item nav-item-0"><a href="index.html">Elasticsearch DXL Python Service 0.2.0 documentation</a> &#187;</li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">
