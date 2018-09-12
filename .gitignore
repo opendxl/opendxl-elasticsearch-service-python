@@ -3,3 +3,6 @@ dist/
 *.pyc
 build/
 dxlelasticsearchservice.egg-info/
+*.csr
+*.key
+*.crt
