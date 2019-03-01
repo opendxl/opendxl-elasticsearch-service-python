@@ -1,0 +1,184 @@
+openDxlApi: '0.1'
+info:
+  title: 'Elasticsearch DXL Service'
+  version: 0.1.0
+  description: 'The OpenDXL Elasticsearch service exposes access to the <a href=''https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html''>Elasticsearch REST APIs</a> via the <a href=''http://www.mcafee.com/us/solutions/data-exchange-layer.aspx''>Data Exchange Layer</a> (DXL) fabric. The service also provides support for storing event notifications received from the DXL fabric to Elasticsearch.'
+  contact:
+    name: OpenDXL
+    url: 'https://www.opendxl.com'
+solutions:
+  'Elasticsearch DXL Service':
+    info:
+      title: 'Elasticsearch DXL Service'
+      version: 0.2.0
+      description: 'The Elasticsearch DXL Service.'
+    externalDocs:
+      description: 'Elasticsearch REST API Reference'
+      url: 'https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html'
+    services:
+      -
+        $ref: '#/services/Elasticsearch DXL Service'
+    events:
+      -
+        $ref: '#/events/<User-Defined-Topic(s)>'
+services:
+  'Elasticsearch DXL Service':
+    info:
+      title: 'Elasticsearch DXL Service'
+      version: 0.2.0
+      description: 'The Elasticsearch DXL service exposes access to the <a href=''https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html''>Elasticsearch REST APIs</a> via the <a href=''http://www.mcafee.com/us/solutions/data-exchange-layer.aspx''>Data Exchange Layer</a> (DXL) fabric. The service also provides support for storing event notifications received from the DXL fabric to Elasticsearch.'
+    externalDocs:
+      description: 'Elasticsearch DXL Python Service (GitHub)'
+      url: 'https://github.com/opendxl/opendxl-elasticsearch-service-python'
+    requests:
+      -
+        $ref: '#/requests/~1opendxl-elasticsearch~1service~1elasticsearch-api~1delete'
+      -
+        $ref: '#/requests/~1opendxl-elasticsearch~1service~1elasticsearch-api~1get'
+      -
+        $ref: '#/requests/~1opendxl-elasticsearch~1service~1elasticsearch-api~1index'
+      -
+        $ref: '#/requests/~1opendxl-elasticsearch~1service~1elasticsearch-api~1update'
+events:
+  '<User-Defined-Topic(s)>':
+    description: 'The OpenDXL Elasticsearch service can be configured to subscribe to a set of topics and automatically store the payload in a document on the Elasticsearch server. For more information please see the Elasticsearch DXL Python Service''s <a href=''https://github.com/opendxl/opendxl-elasticsearch-service-python/blob/master/config/dxlelasticsearchservice.config''>configuration file</a>.'
+    externalDocs:
+      description: 'Basic Event Sample Wiki'
+      url: 'https://github.com/opendxl/opendxl-elasticsearch-service-python/wiki/Basic-Event'
+    payload:
+      description: 'Refer to the documentation for the event(s) you are configuring the Elasticsearch DXL Service to subscribe and store.'
+      example:
+        event_id: basic-event-example-id
+        message: 'Hello from OpenDXL'
+        source: 'Basic Event Example'
+    isIncoming: true
+requests:
+  /opendxl-elasticsearch/service/elasticsearch-api/delete:
+    description: 'Invokes an Elasticsearch ''delete'' command and returns the results. Check the Elasticsearch API Python Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
+    externalDocs:
+      description: 'Elasticsearch API Python Reference: ''delete'''
+      url: 'https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.delete'
+    payload:
+      example:
+        index: opendxl-elasticsearch-service-examples
+        doc_type: basic-example-doc
+        id: '12345'
+    response:
+      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.delete''>Elasticsearch API Python Reference</a> for further details.'
+      payload:
+        example:
+          _id: '12345'
+          _index: opendxl-elasticsearch-client-examples
+          _shards:
+            failed: 0
+            successful: 2
+            total: 2
+          _type: basic-example-doc
+          _version: 2
+          found: true
+          result: deleted
+    errorResponses:
+      '0':
+        payload:
+          $ref: '#/definitions/Elasticsearch Service Error Response Object'
+  /opendxl-elasticsearch/service/elasticsearch-api/get:
+    description: 'Invokes an Elasticsearch ''get'' command and returns the results. Check the Elasticsearch API Python Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
+    externalDocs:
+      description: 'Elasticsearch API Python Reference: ''get'''
+      url: 'https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.get'
+    payload:
+      example:
+        index: opendxl-elasticsearch-service-examples
+        doc_type: basic-example-doc
+        id: basic-example-id
+    response:
+      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.get''>Elasticsearch API Python Reference</a> for further details.'
+      payload:
+        example:
+          _id: basic-example-id
+          _index: opendxl-elasticsearch-service-examples
+          _source:
+            event_id: basic-example-id
+            message: 'Hello from OpenDXL'
+            source: 'Basic Example'
+          _type: basic-example-doc
+          _version: 1
+          found: true
+    errorResponses:
+      '0':
+        payload:
+          $ref: '#/definitions/Elasticsearch Service Error Response Object'
+  /opendxl-elasticsearch/service/elasticsearch-api/index:
+    description: 'Invokes an Elasticsearch ''index'' command and returns the results. Check the Elasticsearch API Python Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
+    externalDocs:
+      description: 'Elasticsearch API Python Reference: ''index'''
+      url: 'https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.index'
+    payload:
+      example:
+        index: opendxl-elasticsearch-service-examples
+        doc_type: basic-example-doc
+        id: '12345'
+        body:
+          message: 'Hello from OpenDXL'
+          source: 'Basic Index Example'
+    response:
+      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.index''>Elasticsearch API Python Reference</a> for further details.'
+      payload:
+        example:
+          _id: '12345'
+          _index: opendxl-elasticsearch-service-examples
+          _shards:
+            failed: 0
+            successful: 2
+            total: 2
+          _type: basic-example-doc
+          _version: 1
+          created: true
+          result: created
+    errorResponses:
+      '0':
+        payload:
+          $ref: '#/definitions/Elasticsearch Service Error Response Object'
+  /opendxl-elasticsearch/service/elasticsearch-api/update:
+    description: 'Invokes an Elasticsearch ''update'' command and returns the results. Check the Elasticsearch API Python Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
+    externalDocs:
+      description: 'Elasticsearch API Python Reference: ''update'''
+      url: 'https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.update'
+    payload:
+      example:
+        index: opendxl-elasticsearch-service-examples
+        doc_type: basic-example-doc
+        id: '12345'
+        body:
+          doc:
+            source: 'Basic Update Example'
+    response:
+      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.update''>Elasticsearch API Python Reference</a> for further details.'
+      payload:
+        example:
+          _id: '12345'
+          _index: opendxl-elasticsearch-service-examples
+          _shards:
+            failed: 0
+            successful: 2
+            total: 2
+          _type: basic-example-doc
+          _version: 2
+          result: updated
+    errorResponses:
+      '0':
+        payload:
+          $ref: '#/definitions/Elasticsearch Service Error Response Object'
+definitions:
+  'Elasticsearch Service Error Response Object':
+    description: 'Error response specific to exceptions thrown by the libraries used by the Elasticsearch DXL Python Service. Additional error information is present in the Error Response message''s ''error_message'' property.'
+    properties:
+      module:
+        description: 'The Python module containing the method in which the error occurred.'
+        type: string
+      class:
+        description: 'The Python class containing the method in which the error occurred.'
+        type: string
+    example:
+      class: Elasticsearch
+      module: elasticsearch
