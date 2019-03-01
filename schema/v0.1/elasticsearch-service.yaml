@@ -50,17 +50,17 @@ events:
     isIncoming: true
 requests:
   /opendxl-elasticsearch/service/elasticsearch-api/delete:
-    description: 'Invokes an Elasticsearch ''delete'' command and returns the results. Check the Elasticsearch API Python Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
+    description: 'Invokes an Elasticsearch ''delete'' command and returns the results. Check the Elasticsearch API Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
     externalDocs:
-      description: 'Elasticsearch API Python Reference: ''delete'''
-      url: 'https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.delete'
+      description: 'Elasticsearch API Reference: ''Delete'''
+      url: 'https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html'
     payload:
       example:
         index: opendxl-elasticsearch-service-examples
         doc_type: basic-example-doc
         id: '12345'
     response:
-      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.delete''>Elasticsearch API Python Reference</a> for further details.'
+      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-delete.html''>Elasticsearch API Reference</a> for further details.'
       payload:
         example:
           _id: '12345'
@@ -78,17 +78,17 @@ requests:
         payload:
           $ref: '#/definitions/Elasticsearch Service Error Response Object'
   /opendxl-elasticsearch/service/elasticsearch-api/get:
-    description: 'Invokes an Elasticsearch ''get'' command and returns the results. Check the Elasticsearch API Python Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
+    description: 'Invokes an Elasticsearch ''get'' command and returns the results. Check the Elasticsearch API Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
     externalDocs:
-      description: 'Elasticsearch API Python Reference: ''get'''
-      url: 'https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.get'
+      description: 'Elasticsearch API Reference: ''Get'''
+      url: 'https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html'
     payload:
       example:
         index: opendxl-elasticsearch-service-examples
         doc_type: basic-example-doc
         id: basic-example-id
     response:
-      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.get''>Elasticsearch API Python Reference</a> for further details.'
+      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-get.html''>Elasticsearch API Reference</a> for further details.'
       payload:
         example:
           _id: basic-example-id
@@ -105,10 +105,10 @@ requests:
         payload:
           $ref: '#/definitions/Elasticsearch Service Error Response Object'
   /opendxl-elasticsearch/service/elasticsearch-api/index:
-    description: 'Invokes an Elasticsearch ''index'' command and returns the results. Check the Elasticsearch API Python Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
+    description: 'Invokes an Elasticsearch ''index'' command and returns the results. Check the Elasticsearch API Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
     externalDocs:
-      description: 'Elasticsearch API Python Reference: ''index'''
-      url: 'https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.index'
+      description: 'Elasticsearch API Reference: ''Index'''
+      url: 'https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html'
     payload:
       example:
         index: opendxl-elasticsearch-service-examples
@@ -118,7 +118,7 @@ requests:
           message: 'Hello from OpenDXL'
           source: 'Basic Index Example'
     response:
-      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.index''>Elasticsearch API Python Reference</a> for further details.'
+      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-index_.html''>Elasticsearch API Reference</a> for further details.'
       payload:
         example:
           _id: '12345'
@@ -136,10 +136,10 @@ requests:
         payload:
           $ref: '#/definitions/Elasticsearch Service Error Response Object'
   /opendxl-elasticsearch/service/elasticsearch-api/update:
-    description: 'Invokes an Elasticsearch ''update'' command and returns the results. Check the Elasticsearch API Python Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
+    description: 'Invokes an Elasticsearch ''update'' command and returns the results. Check the Elasticsearch API Reference for usable key/value parameters (formatted as a JSON string, see example payload below).'
     externalDocs:
-      description: 'Elasticsearch API Python Reference: ''update'''
-      url: 'https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.update'
+      description: 'Elasticsearch API Reference: ''Update'''
+      url: 'https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html'
     payload:
       example:
         index: opendxl-elasticsearch-service-examples
@@ -149,7 +149,7 @@ requests:
           doc:
             source: 'Basic Update Example'
     response:
-      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://elasticsearch-py.readthedocs.io/en/master/api.html#elasticsearch.Elasticsearch.update''>Elasticsearch API Python Reference</a> for further details.'
+      description: 'The contents of the DXL response payload are provided as a JSON string form of the response provided by the Elasticsearch API. Please see the <a href=''https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-update.html''>Elasticsearch API Reference</a> for further details.'
       payload:
         example:
           _id: '12345'
