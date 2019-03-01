@@ -41,12 +41,8 @@ services:
         $ref: '#/requests/~1opendxl-elasticsearch~1service~1elasticsearch-api~1update'
 events:
   '<User-Defined-Topic(s)>':
-    description: 'The OpenDXL Elasticsearch service can be configured to subscribe to a set of topics and automatically store the payload in a document on the Elasticsearch server. For more information please see the Elasticsearch DXL Python Service''s <a href=''https://github.com/opendxl/opendxl-elasticsearch-service-python/blob/master/config/dxlelasticsearchservice.config''>configuration file</a>.'
-    externalDocs:
-      description: 'Basic Event Sample Wiki'
-      url: 'https://github.com/opendxl/opendxl-elasticsearch-service-python/wiki/Basic-Event'
+    description: 'The OpenDXL Elasticsearch service can be configured to subscribe to a set of topics and automatically store the payload in a document on the Elasticsearch server. <p>For more information please see the  <a href=''https://opendxl.github.io/opendxl-elasticsearch-service-python/pydoc/configuration.html#elasticsearch-dxl-python-service-dxlelasticsearchservice-config''>Elasticsearch DXL Python Service SDK: Configuration</a> page. Specifically, the <b>dxlelasticsearchservice.config</b> section.'
     payload:
-      description: 'Refer to the documentation for the event(s) you are configuring the Elasticsearch DXL Service to subscribe and store.'
       example:
         event_id: basic-event-example-id
         message: 'Hello from OpenDXL'
