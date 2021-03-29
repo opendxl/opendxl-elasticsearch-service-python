@@ -3,7 +3,7 @@
 [![Latest PyPI Version](https://img.shields.io/pypi/v/dxlelasticsearchservice.svg)](https://pypi.python.org/pypi/dxlelasticsearchservice)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Actions Status](https://github.com/opendxl/opendxl-elasticsearch-service-python/workflows/Build/badge.svg)](https://github.com/opendxl/opendxl-elasticsearch-service-python/actions)
-[![Docker Build Status](https://img.shields.io/docker/build/opendxl/opendxl-elasticsearch-service-python.svg)](https://hub.docker.com/r/opendxl/opendxl-elasticsearch-service-python/)
+[![Docker Build Status](https://img.shields.io/docker/cloud/build/opendxl/opendxl-elasticsearch-service-python.svg)](https://hub.docker.com/r/opendxl/opendxl-elasticsearch-service-python/)
 
 
 ## Overview
